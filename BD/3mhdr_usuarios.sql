@@ -29,6 +29,7 @@ CREATE TABLE `usuarios` (
   `Sueldo` varchar(45) NOT NULL,
   `CantidadAportes` varchar(45) DEFAULT NULL,
   `ID_ViviendaUsuario` int(11) DEFAULT NULL,
+  `EsSocio` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`CI`),
   KEY `ID_ViviendaUsuario` (`ID_ViviendaUsuario`),
   CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`ID_ViviendaUsuario`) REFERENCES `vivienda` (`ID_Vivienda`)
@@ -41,6 +42,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
+INSERT INTO `usuarios` VALUES (89,'Pepe Silva','567','',NULL,NULL,NULL),(11111111,'Carlita','54321','',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-04 16:20:35
+-- Dump completed on 2025-06-04 17:36:53
