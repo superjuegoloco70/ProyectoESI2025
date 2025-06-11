@@ -10,28 +10,52 @@ $con = new db();
 
 switch ($method){
     case "GET":
-        if(isset($_GET["id"])){
-            $id = $_GET["id"];
-            $query = "Select * from usuarios where CI=$id";
-            $result = $con->query($query);
-            $data = $result->fetch_assoc();
-            echo json_encode($data);
+        //Iniciar Sesión
+        if(isset($_GET["Ci"]) && isset($_GET["passwd"])){
+            
+            $id = $_GET["Ci"];
+            $passwd=$_GET["passwd"];
+            if($id != null && $passwd != null){
+                $query = "Select Contraseña from usuarios where CI=$id";
+                $result = $con->query($query);
+                $data = $result->fetch_assoc();
+                if($passwd == $data["Contraseña"]){
+                    echo json_encode(["message" => "Sesión iniciada"]);
+                }else{
+                    echo json_encode(["message" => "Error en el inicio de sesión"]);
+                } 
+            }else{
+                echo json_encode(["message" => "Error en el inicio de sesión"]);
+            }
         }else{
-            $result = $con->query("Select * from usuarios");
-            $users = [];
-            while ($row = $result->fetch_assoc()){
-                $users[] = $row;
-            } 
-            echo json_encode($users);
+            echo json_encode(["message" => "Error en el inicio de sesión"]);
         }
         break;
      case 'POST':
-        $name = $_GET['name'];
-        $id = $_GET['id'];
-        $passwd = $_GET['passwd'];
-        $query = "INSERT INTO usuarios (CI, Nombre, Contraseña) VALUES ('$id', '$name', '$passwd')";
-        $con->query($query);
-        echo json_encode(["message" => "User added successfully"]);
+        //Registro Usuario
+        if(isset($_POST["Ci"]) && isset($_POST["passwd"] ) && isset($_POST["name"])){
+            $name = $_POST['name'];
+            $id = $_POST['Ci'];
+            $passwd = $_POST['passwd'];
+            if($id != null && $passwd != null && $name != null){
+                $query = "Select * from usuarios where CI=$id";
+                $result = $con->query($query);
+                $data = $result->fetch_assoc();
+                if($data["CI"] != $id){
+                    $query = "INSERT INTO usuarios (CI, Nombre, Contraseña, EsSocio) VALUES ('$id', '$name', '$passwd', 0)";
+                    $con->query($query);
+                    echo json_encode(["message" => "usuario Registrado"]);
+                }else{
+                    echo json_encode(["message" => "El usuario ya existe"]);
+                }
+                
+            }else{
+                echo json_encode(["message" => "Error en el registro"]);
+            }
+        }else{
+            echo json_encode(["message" => "Error en el registro"]);
+        }
+        
         break;
 
     case 'PUT':
