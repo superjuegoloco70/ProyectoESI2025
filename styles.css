@@ -1,0 +1,118 @@
+/* Reset básico */
+* {
+    margin: 0;
+    
+    padding: 0;
+    
+    box-sizing: border-box;
+    
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: #f4f6f8;
+    
+    color: #333;
+    
+    display: flex;
+    
+    flex-direction: column;
+    
+    align-items: center;
+    
+    padding: 40px 20px;
+    
+    min-height: 100vh;
+}
+
+h1 {
+    font-size: 2rem;
+    
+    margin-bottom: 30px;
+    
+    color: #2c3e50;
+}
+
+/* Botones */
+button {
+    background-color: #3498db;
+    
+    color: white;
+    
+    padding: 10px 20px;
+    
+    margin: 10px;
+    
+    border: none;
+    
+    border-radius: 8px;
+    
+    cursor: pointer;
+    
+    font-size: 1rem;
+    
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+/* Formularios */
+form {
+    background: white;
+    
+    padding: 30px;
+    
+    border-radius: 12px;
+    
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    
+    width: 100%;
+    
+    max-width: 400px;
+}
+
+form p {
+    margin-bottom: 5px;
+    
+    font-weight: 500;
+}
+
+input[type="text"] {
+    width: 100%;
+    
+    padding: 10px;
+    
+    margin-bottom: 20px;
+    
+    border: 1px solid #ccc;
+    
+    border-radius: 6px;
+}
+
+/* Enlaces */
+a {
+    text-decoration: none;
+}
+
+a button {
+    width: 150px;
+}
+
+/* Responsivo */
+@media (max-width: 500px) {
+    body {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    button {
+        width: 100%;
+     
+        margin: 10px 0;
+    }
+}
