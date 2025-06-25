@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `3mhdr` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+USE `3mhdr`;
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: localhost    Database: 3mhdr
@@ -28,10 +30,10 @@ CREATE TABLE `jornadas` (
   `ID_ConstruccionTrabajada` int(11) DEFAULT NULL,
   `CI_Jornalero` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID_Jornada`),
-  KEY `CI_Jornalero` (`CI_Jornalero`),
   KEY `ID_ConstruccionTrabajada` (`ID_ConstruccionTrabajada`),
-  CONSTRAINT `jornadas_ibfk_1` FOREIGN KEY (`CI_Jornalero`) REFERENCES `usuarios` (`CI`),
-  CONSTRAINT `jornadas_ibfk_2` FOREIGN KEY (`ID_ConstruccionTrabajada`) REFERENCES `construcciones` (`ID_Construccion`)
+  KEY `CI_Jornalero` (`CI_Jornalero`),
+  CONSTRAINT `jornadas_ibfk_2` FOREIGN KEY (`ID_ConstruccionTrabajada`) REFERENCES `construcciones` (`ID_Construccion`),
+  CONSTRAINT `jornadas_ibfk_3` FOREIGN KEY (`CI_Jornalero`) REFERENCES `usuarios` (`CI`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -53,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-04 16:20:34
+-- Dump completed on 2025-06-25 16:41:47

@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `3mhdr` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+USE `3mhdr`;
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: localhost    Database: 3mhdr
@@ -31,6 +33,7 @@ CREATE TABLE `usuarios` (
   `ID_ViviendaUsuario` int(11) DEFAULT NULL,
   `EsSocio` tinyint(1) DEFAULT NULL,
   `EsAdmin` tinyint(1) DEFAULT NULL,
+  `HorasTrabajadas` int(11) DEFAULT NULL,
   PRIMARY KEY (`CI`),
   KEY `ID_ViviendaUsuario` (`ID_ViviendaUsuario`),
   CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`ID_ViviendaUsuario`) REFERENCES `vivienda` (`ID_Vivienda`)
@@ -43,7 +46,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (85,'sadsad','2131','',NULL,NULL,NULL,NULL),(89,'Pepe Silva','567','',NULL,NULL,NULL,NULL),(589,'Koko','hola123','',NULL,NULL,NULL,NULL),(11111111,'Carlita','54321','',NULL,NULL,NULL,NULL);
+INSERT INTO `usuarios` VALUES (1,'j','lll','',NULL,NULL,NULL,NULL,NULL),(85,'sadsad','2131','',NULL,NULL,NULL,NULL,NULL),(89,'Pepe Silva','567','',NULL,NULL,NULL,NULL,NULL),(548,'Pepito','lol','',NULL,NULL,0,NULL,NULL),(589,'Koko','hola123','',NULL,NULL,NULL,NULL,NULL),(11111111,'Carlita','54321','',NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-05 15:30:35
+-- Dump completed on 2025-06-25 16:41:45

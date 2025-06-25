@@ -18,29 +18,29 @@ USE `3mhdr`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `aportes`
+-- Table structure for table `hace_usuariosjornadas`
 --
 
-DROP TABLE IF EXISTS `aportes`;
+DROP TABLE IF EXISTS `hace_usuariosjornadas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `aportes` (
-  `ID_Aporte` int(11) NOT NULL AUTO_INCREMENT,
-  `TipoAporte` varchar(255) DEFAULT NULL,
-  `CI_Aportario` int(11) DEFAULT NULL,
-  PRIMARY KEY (`ID_Aporte`),
-  KEY `CI_Aportario` (`CI_Aportario`),
-  CONSTRAINT `aportes_ibfk_1` FOREIGN KEY (`CI_Aportario`) REFERENCES `usuarios` (`CI`)
+CREATE TABLE `hace_usuariosjornadas` (
+  `CI` int(11) NOT NULL,
+  `ID_Jornada` int(11) DEFAULT NULL,
+  PRIMARY KEY (`CI`),
+  KEY `ID_Jornada` (`ID_Jornada`),
+  CONSTRAINT `hace_usuariosjornadas_ibfk_1` FOREIGN KEY (`CI`) REFERENCES `usuarios` (`CI`),
+  CONSTRAINT `hace_usuariosjornadas_ibfk_2` FOREIGN KEY (`ID_Jornada`) REFERENCES `jornadas` (`ID_Jornada`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `aportes`
+-- Dumping data for table `hace_usuariosjornadas`
 --
 
-LOCK TABLES `aportes` WRITE;
-/*!40000 ALTER TABLE `aportes` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aportes` ENABLE KEYS */;
+LOCK TABLES `hace_usuariosjornadas` WRITE;
+/*!40000 ALTER TABLE `hace_usuariosjornadas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hace_usuariosjornadas` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
