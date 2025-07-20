@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `3mhdr` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
-USE `3mhdr`;
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.40, for Win64 (x86_64)
 --
--- Host: localhost    Database: 3mhdr
+-- Host: 127.0.0.1    Database: 3mhdr
 -- ------------------------------------------------------
--- Server version	5.5.5-10.4.27-MariaDB
+-- Server version	5.5.5-10.4.32-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -26,14 +24,12 @@ DROP TABLE IF EXISTS `usuarios`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuarios` (
   `CI` int(11) NOT NULL,
-  `Nombre` varchar(45) NOT NULL,
-  `Contraseña` varchar(45) NOT NULL,
-  `Sueldo` varchar(45) NOT NULL,
-  `CantidadAportes` varchar(45) DEFAULT NULL,
+  `Nombre` varchar(255) NOT NULL,
+  `Contrasena` varchar(255) NOT NULL,
+  `Sueldo` varchar(255) NOT NULL,
   `ID_ViviendaUsuario` int(11) DEFAULT NULL,
-  `EsSocio` tinyint(1) DEFAULT NULL,
-  `EsAdmin` tinyint(1) DEFAULT NULL,
-  `HorasTrabajadas` int(11) DEFAULT NULL,
+  `Estado` int(11) DEFAULT NULL,
+  `HorasTrabajadasMensuales` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`CI`),
   KEY `ID_ViviendaUsuario` (`ID_ViviendaUsuario`),
   CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`ID_ViviendaUsuario`) REFERENCES `vivienda` (`ID_Vivienda`)
@@ -46,7 +42,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'j','lll','',NULL,NULL,NULL,NULL,NULL),(85,'sadsad','2131','',NULL,NULL,NULL,NULL,NULL),(89,'Pepe Silva','567','',NULL,NULL,NULL,NULL,NULL),(548,'Pepito','lol','',NULL,NULL,0,NULL,NULL),(589,'Koko','hola123','',NULL,NULL,NULL,NULL,NULL),(11111111,'Carlita','54321','',NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `usuarios` VALUES (85,'sadsad','2131','',NULL,NULL,NULL),(89,'Pepe Silva','567','',NULL,NULL,NULL),(589,'Koko','hola123','',NULL,NULL,NULL),(11111111,'Carlita','54321','',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -59,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-25 16:41:45
+-- Dump completed on 2025-07-20 13:22:43

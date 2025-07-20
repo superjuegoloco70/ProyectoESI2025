@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `3mhdr` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
-USE `3mhdr`;
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.40, for Win64 (x86_64)
 --
--- Host: localhost    Database: 3mhdr
+-- Host: 127.0.0.1    Database: 3mhdr
 -- ------------------------------------------------------
--- Server version	5.5.5-10.4.27-MariaDB
+-- Server version	5.5.5-10.4.32-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -26,14 +24,11 @@ DROP TABLE IF EXISTS `jornadas`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jornadas` (
   `ID_Jornada` int(11) NOT NULL AUTO_INCREMENT,
-  `Fecha` date DEFAULT NULL,
-  `ID_ConstruccionTrabajada` int(11) DEFAULT NULL,
-  `CI_Jornalero` int(11) DEFAULT NULL,
+  `Fecha` date NOT NULL,
+  `HorasJornada` int(11) NOT NULL,
   PRIMARY KEY (`ID_Jornada`),
-  KEY `ID_ConstruccionTrabajada` (`ID_ConstruccionTrabajada`),
-  KEY `CI_Jornalero` (`CI_Jornalero`),
-  CONSTRAINT `jornadas_ibfk_2` FOREIGN KEY (`ID_ConstruccionTrabajada`) REFERENCES `construcciones` (`ID_Construccion`),
-  CONSTRAINT `jornadas_ibfk_3` FOREIGN KEY (`CI_Jornalero`) REFERENCES `usuarios` (`CI`)
+  KEY `ID_ConstruccionTrabajada` (`HorasJornada`),
+  CONSTRAINT `jornadas_ibfk_2` FOREIGN KEY (`HorasJornada`) REFERENCES `construcciones` (`ID_Construccion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -55,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-25 16:41:47
+-- Dump completed on 2025-07-20 13:22:44

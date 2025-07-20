@@ -16,26 +16,29 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `construcciones`
+-- Table structure for table `asisteneventosusuarios`
 --
 
-DROP TABLE IF EXISTS `construcciones`;
+DROP TABLE IF EXISTS `asisteneventosusuarios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `construcciones` (
-  `ID_Construccion` int(11) NOT NULL AUTO_INCREMENT,
-  `Etapa` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`ID_Construccion`)
+CREATE TABLE `asisteneventosusuarios` (
+  `ID_EventoAsistido` int(11) NOT NULL,
+  `CI_Invitado` int(11) NOT NULL,
+  PRIMARY KEY (`ID_EventoAsistido`,`CI_Invitado`),
+  KEY `CI_Invitado` (`CI_Invitado`),
+  CONSTRAINT `asisteneventosusuarios_ibfk_1` FOREIGN KEY (`CI_Invitado`) REFERENCES `usuarios` (`CI`),
+  CONSTRAINT `asisteneventosusuarios_ibfk_2` FOREIGN KEY (`ID_EventoAsistido`) REFERENCES `eventos` (`ID_Evento`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `construcciones`
+-- Dumping data for table `asisteneventosusuarios`
 --
 
-LOCK TABLES `construcciones` WRITE;
-/*!40000 ALTER TABLE `construcciones` DISABLE KEYS */;
-/*!40000 ALTER TABLE `construcciones` ENABLE KEYS */;
+LOCK TABLES `asisteneventosusuarios` WRITE;
+/*!40000 ALTER TABLE `asisteneventosusuarios` DISABLE KEYS */;
+/*!40000 ALTER TABLE `asisteneventosusuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -47,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-07-20 13:22:44
+-- Dump completed on 2025-07-20 13:22:45

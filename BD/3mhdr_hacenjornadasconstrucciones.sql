@@ -16,26 +16,29 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `construcciones`
+-- Table structure for table `hacenjornadasconstrucciones`
 --
 
-DROP TABLE IF EXISTS `construcciones`;
+DROP TABLE IF EXISTS `hacenjornadasconstrucciones`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `construcciones` (
-  `ID_Construccion` int(11) NOT NULL AUTO_INCREMENT,
-  `Etapa` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`ID_Construccion`)
+CREATE TABLE `hacenjornadasconstrucciones` (
+  `ID_JornadaTrabajada` int(11) NOT NULL,
+  `ID_ConstruccionTrabajada` int(11) NOT NULL,
+  PRIMARY KEY (`ID_JornadaTrabajada`,`ID_ConstruccionTrabajada`),
+  KEY `ID_ConstruccionTrabajada` (`ID_ConstruccionTrabajada`),
+  CONSTRAINT `hacenjornadasconstrucciones_ibfk_1` FOREIGN KEY (`ID_JornadaTrabajada`) REFERENCES `jornadas` (`ID_Jornada`),
+  CONSTRAINT `hacenjornadasconstrucciones_ibfk_2` FOREIGN KEY (`ID_ConstruccionTrabajada`) REFERENCES `construcciones` (`ID_Construccion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `construcciones`
+-- Dumping data for table `hacenjornadasconstrucciones`
 --
 
-LOCK TABLES `construcciones` WRITE;
-/*!40000 ALTER TABLE `construcciones` DISABLE KEYS */;
-/*!40000 ALTER TABLE `construcciones` ENABLE KEYS */;
+LOCK TABLES `hacenjornadasconstrucciones` WRITE;
+/*!40000 ALTER TABLE `hacenjornadasconstrucciones` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hacenjornadasconstrucciones` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
