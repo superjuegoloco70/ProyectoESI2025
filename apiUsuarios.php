@@ -12,13 +12,10 @@ switch ($method){
     case "GET":
         //Iniciar Sesión
         if(isset($_GET["Ci"]) && isset($_GET["passwd"])){
-            
             $id = $_GET["Ci"];
             $passwd=$_GET["passwd"];
             if($id != null && $passwd != null){
-                $query = "Select Contraseña from usuarios where CI=$id";
-                $result = $con->query($query);
-                $data = $result->fetch_assoc();
+                $data = $con->checkCiPass($id, $passwd);
                 if($passwd == $data["Contraseña"]){
                     echo json_encode(["message" => "Sesión iniciada"]);
                 }else{
@@ -38,16 +35,8 @@ switch ($method){
             $id = $_POST['Ci'];
             $passwd = $_POST['passwd'];
             if($id != null && $passwd != null && $name != null){
-                $query = "Select * from usuarios where CI=$id";
-                $result = $con->query($query);
-                $data = $result->fetch_assoc();
-                if($data["CI"] != $id){
-                    $query = "INSERT INTO usuarios (CI, Nombre, Contraseña, EsSocio) VALUES ('$id', '$name', '$passwd', 0)";
-                    $con->query($query);
-                    echo json_encode(["message" => "usuario Registrado"]);
-                }else{
-                    echo json_encode(["message" => "El usuario ya existe"]);
-                }
+                $result = $con->newUser($name, $id, $passwd);
+                echo $result;
                 
             }else{
                 echo json_encode(["message" => "Error en el registro"]);
@@ -58,7 +47,7 @@ switch ($method){
         
         break;
 
-    case 'PUT':
+    /*case 'PUT':
         $id = $_GET['id'];
         $socio = $_GET['socio'];
         $con->query("UPDATE usuarios SET EsSocio='$socio' WHERE CI=$id");
@@ -73,7 +62,7 @@ switch ($method){
 
     default:
         echo json_encode(["message" => "Invalid request method"]);
-        break;
+        break;*/
 }
 
 
