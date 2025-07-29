@@ -19,7 +19,7 @@ switch ($method){
                 $query = "Select Contraseña from usuarios where CI=$id";
                 $result = $con->query($query);
                 $data = $result->fetch_assoc();
-                if($passwd == $data["Contraseña"]){
+                if($passwd == $data["Contrasena"]){
                     echo json_encode(["message" => "Sesión iniciada"]);
                 }else{
                     echo json_encode(["message" => "Error en el inicio de sesión"]);
@@ -42,7 +42,7 @@ switch ($method){
                 $result = $con->query($query);
                 $data = $result->fetch_assoc();
                 if($data["CI"] != $id){
-                    $query = "INSERT INTO usuarios (CI, Nombre, Contraseña, Estado) VALUES ('$id', '$name', '$passwd', 'N/A')";
+                    $query = "INSERT INTO usuarios (CI, Nombre, Contrasena, Estado) VALUES ('$id', '$name', '$passwd', 'N/A')";
                     $con->query($query);
                     echo json_encode(["message" => "usuario Registrado"]);
                 }else{
