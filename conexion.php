@@ -6,7 +6,7 @@
 
         public $conn;
         public function __construct() {
-            $this->conn = new mysqli("localhost","root","","");
+            $this->conn = new mysqli("localhost:3306","root","","3mhdr");
             if ($this->conn->connect_error) {
                 die("Connection failed: " . $this->conn->connect_error);
             }
@@ -18,7 +18,7 @@
         }
 
         public function checkCiPass($id, $passwd){
-            $query = "Select Contraseña from usuarios where CI=$id";
+            $query = "Select Contrasena from usuarios where CI=$id";
             $result = $this->conn->query($query);
             $data = $result->fetch_assoc();
             return $data;
@@ -29,8 +29,8 @@
             $result = $this->conn->query($query);
             $data = $result->fetch_assoc();
             if($data["CI"] != $id){
-                $query = "INSERT INTO usuarios (CI, Nombre, Contraseña, EsSocio) VALUES ('$id', '$name', '$passwd', 0)";
-                $con->query($query);
+                $query = "INSERT INTO usuarios (CI, Nombre, Contrasena, Estado) VALUES ('$id', '$name', '$passwd', 'N/A')";
+                $this->conn->query($query);
                 $res = json_encode(["message" => "usuario Registrado"]);
             }else{
                 $res = json_encode(["message" => "El usuario ya existe"]);

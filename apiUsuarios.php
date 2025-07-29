@@ -1,5 +1,5 @@
 <?php
-include "empezarconexion.php";
+include "conexion.php";
 
 header("Content-Type: application/json");
 $method = $_SERVER["REQUEST_METHOD"];
@@ -12,23 +12,20 @@ switch ($method){
     case "GET":
         //Iniciar Sesión
         if(isset($_GET["Ci"]) && isset($_GET["passwd"])){
-            
             $id = $_GET["Ci"];
             $passwd=$_GET["passwd"];
             if($id != null && $passwd != null){
-                $query = "Select Contrasena from usuarios where CI=$id";
-                $result = $con->query($query);
-                $data = $result->fetch_assoc();
+                $data = $con->checkCiPass($id, $passwd);
                 if($passwd == $data["Contrasena"]){
-                    echo json_encode(["message" => "Sesión iniciada"]);
+                    echo json_encode(["message" => "Sesion iniciada"]);      
                 }else{
-                    echo json_encode(["message" => "Error en el inicio de sesión"]);
+                    echo json_encode(["message" => "Error en el inicio de sesion"]);
                 } 
             }else{
-                echo json_encode(["message" => "Error en el inicio de sesión"]);
+                echo json_encode(["message" => "Error en el inicio de sesion"]);
             }
         }else{
-            echo json_encode(["message" => "Error en el inicio de sesión"]);
+            echo json_encode(["message" => "Error en el inicio de sesion"]);
         }
         break;
      case 'POST':
@@ -38,16 +35,10 @@ switch ($method){
             $id = $_POST['Ci'];
             $passwd = $_POST['passwd'];
             if($id != null && $passwd != null && $name != null){
-                $query = "Select * from usuarios where CI=$id";
-                $result = $con->query($query);
-                $data = $result->fetch_assoc();
-                if($data["CI"] != $id){
-                    $query = "INSERT INTO usuarios (CI, Nombre, Contrasena, Estado) VALUES ('$id', '$name', '$passwd', 'N/A')";
-                    $con->query($query);
-                    echo json_encode(["message" => "usuario Registrado"]);
-                }else{
-                    echo json_encode(["message" => "El usuario ya existe"]);
-                }
+
+                $result = $con->newUser($name, $id, $passwd);
+                echo $result;
+
                 
             }else{
                 echo json_encode(["message" => "Error en el registro"]);
