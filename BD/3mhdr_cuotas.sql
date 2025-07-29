@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.40, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: 3mhdr
+-- Host: localhost    Database: 3mhdr
 -- ------------------------------------------------------
--- Server version	5.5.5-10.4.32-MariaDB
+-- Server version	5.5.5-10.4.27-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -29,6 +29,7 @@ CREATE TABLE `cuotas` (
   `CI_Prestarario` int(11) NOT NULL,
   `CuotasPagadas` int(11) DEFAULT NULL,
   `ConfirmantePago` blob DEFAULT NULL,
+  `PagoAprobado` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`ID_Cuota`),
   KEY `CI_Prestarario` (`CI_Prestarario`),
   CONSTRAINT `cuotas_ibfk_1` FOREIGN KEY (`CI_Prestarario`) REFERENCES `usuarios` (`CI`)
@@ -53,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-07-20 13:22:44
+-- Dump completed on 2025-07-29 17:30:19

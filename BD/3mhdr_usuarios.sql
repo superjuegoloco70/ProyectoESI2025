@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.40, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: 3mhdr
+-- Host: localhost    Database: 3mhdr
 -- ------------------------------------------------------
--- Server version	5.5.5-10.4.32-MariaDB
+-- Server version	5.5.5-10.4.27-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -26,7 +26,7 @@ CREATE TABLE `usuarios` (
   `CI` int(11) NOT NULL,
   `Nombre` varchar(255) NOT NULL,
   `Contrasena` varchar(255) NOT NULL,
-  `Sueldo` varchar(255) NOT NULL,
+  `Sueldo` varchar(255) DEFAULT NULL,
   `ID_ViviendaUsuario` int(11) DEFAULT NULL,
   `Estado` int(11) DEFAULT NULL,
   `HorasTrabajadasMensuales` varchar(255) DEFAULT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (85,'sadsad','2131','',NULL,NULL,NULL),(89,'Pepe Silva','567','',NULL,NULL,NULL),(589,'Koko','hola123','',NULL,NULL,NULL),(11111111,'Carlita','54321','',NULL,NULL,NULL);
+INSERT INTO `usuarios` VALUES (81,'lala','898','',NULL,0,NULL),(85,'sadsad','2131','',NULL,NULL,NULL),(89,'Pepe Silva','567','',NULL,NULL,NULL),(589,'Koko','hola123','',NULL,NULL,NULL),(11111111,'Carlita','54321','',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-07-20 13:22:43
+-- Dump completed on 2025-07-29 17:30:17

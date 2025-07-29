@@ -1,5 +1,5 @@
 <?php
-include "empezarconexion.php";
+include "conexion.php";
 
 header("Content-Type: application/json");
 $method = $_SERVER["REQUEST_METHOD"];
@@ -16,16 +16,16 @@ switch ($method){
             $passwd=$_GET["passwd"];
             if($id != null && $passwd != null){
                 $data = $con->checkCiPass($id, $passwd);
-                if($passwd == $data["Contraseña"]){
-                    echo json_encode(["message" => "Sesión iniciada"]);
+                if($passwd == $data["Contrasena"]){
+                    echo json_encode(["message" => "Sesion iniciada"]);
                 }else{
-                    echo json_encode(["message" => "Error en el inicio de sesión"]);
+                    echo json_encode(["message" => "Error en el inicio de sesion"]);
                 } 
             }else{
-                echo json_encode(["message" => "Error en el inicio de sesión"]);
+                echo json_encode(["message" => "Error en el inicio de sesion"]);
             }
         }else{
-            echo json_encode(["message" => "Error en el inicio de sesión"]);
+            echo json_encode(["message" => "Error en el inicio de sesion"]);
         }
         break;
      case 'POST':
@@ -58,11 +58,11 @@ switch ($method){
         $id = $_GET['id'];
         $con->query("DELETE FROM usuarios WHERE CI=$id");
         echo json_encode(["message" => "User deleted successfully"]);
-        break;
+        break;*/
 
     default:
         echo json_encode(["message" => "Invalid request method"]);
-        break;*/
+        break;
 }
 
 
