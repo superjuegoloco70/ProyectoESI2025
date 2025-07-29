@@ -16,7 +16,7 @@ switch ($method){
             $id = $_GET["Ci"];
             $passwd=$_GET["passwd"];
             if($id != null && $passwd != null){
-                $query = "Select Contraseña from usuarios where CI=$id";
+                $query = "Select Contrasena from usuarios where CI=$id";
                 $result = $con->query($query);
                 $data = $result->fetch_assoc();
                 if($passwd == $data["Contrasena"]){
@@ -56,19 +56,6 @@ switch ($method){
             echo json_encode(["message" => "Error en el registro"]);
         }
         
-        break;
-
-    case 'PUT':
-        $id = $_GET['id'];
-        $socio = $_GET['socio'];
-        $con->query("UPDATE usuarios SET EsSocio='$socio' WHERE CI=$id");
-        echo json_encode(["message" => "User updated successfully"]);
-        break;
-
-    case 'DELETE':
-        $id = $_GET['id'];
-        $con->query("DELETE FROM usuarios WHERE CI=$id");
-        echo json_encode(["message" => "User deleted successfully"]);
         break;
 
     default:
