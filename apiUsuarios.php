@@ -17,7 +17,7 @@ switch ($method){
             if($id != null && $passwd != null){
                 $data = $con->checkCiPass($id, $passwd);
                 if($passwd == $data["Contrasena"]){
-                    echo json_encode(["message" => "Sesion iniciada"]);
+                    echo json_encode(["message" => "Sesion iniciada"]);      
                 }else{
                     echo json_encode(["message" => "Error en el inicio de sesion"]);
                 } 
@@ -35,8 +35,10 @@ switch ($method){
             $id = $_POST['Ci'];
             $passwd = $_POST['passwd'];
             if($id != null && $passwd != null && $name != null){
+
                 $result = $con->newUser($name, $id, $passwd);
                 echo $result;
+
                 
             }else{
                 echo json_encode(["message" => "Error en el registro"]);
@@ -46,19 +48,6 @@ switch ($method){
         }
         
         break;
-
-    /*case 'PUT':
-        $id = $_GET['id'];
-        $socio = $_GET['socio'];
-        $con->query("UPDATE usuarios SET EsSocio='$socio' WHERE CI=$id");
-        echo json_encode(["message" => "User updated successfully"]);
-        break;
-
-    case 'DELETE':
-        $id = $_GET['id'];
-        $con->query("DELETE FROM usuarios WHERE CI=$id");
-        echo json_encode(["message" => "User deleted successfully"]);
-        break;*/
 
     default:
         echo json_encode(["message" => "Invalid request method"]);
