@@ -5,6 +5,7 @@ header("Content-Type: application/json");
 $method = $_SERVER["REQUEST_METHOD"];
 $input = json_decode(file_get_contents("php://input"), true);
 
+session_start();
 
 $con = new db();
 
@@ -17,7 +18,15 @@ switch ($method){
             if($id != null && $passwd != null){
                 $data = $con->checkCiPass($id, $passwd);
                 if($passwd == $data["Contrasena"]){
-                    echo json_encode(["message" => "Sesion iniciada"]);      
+                    $_SESSION["id"] = $id;
+                    $result = $con->checkApproved($id);
+                    if($result == 0){
+                        header("Location: esperandoaprobacion.html");
+                    }elseif($result == 1){
+                        header("Location: usuarios.html");
+                    }else{
+                        echo json_encode(["message" => "Error"]);
+                    }
                 }else{
                     echo json_encode(["message" => "Error en el inicio de sesion"]);
                 } 
@@ -35,10 +44,12 @@ switch ($method){
             $id = $_POST['Ci'];
             $passwd = $_POST['passwd'];
             if($id != null && $passwd != null && $name != null){
-
                 $result = $con->newUser($name, $id, $passwd);
-                echo $result;
-
+                if ($result == true){
+                    header("Location: esperandoaprobacion.html");
+                }else{
+                    json_encode(["message" => "El usuario ya existe"]);
+                }
                 
             }else{
                 echo json_encode(["message" => "Error en el registro"]);

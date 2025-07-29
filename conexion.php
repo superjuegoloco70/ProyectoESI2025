@@ -12,11 +12,6 @@
             }
         }
 
-        public function query($q)
-        {
-            return $this->conn->query($q);
-        }
-
         public function checkCiPass($id, $passwd){
             $query = "Select Contrasena from usuarios where CI=$id";
             $result = $this->conn->query($query);
@@ -24,16 +19,24 @@
             return $data;
         }
 
+        public function checkApproved($id){
+            $res = "";
+            $query = "Select Estado from usuarios where CI=$id";
+            $result = $this->conn->query($query);
+            $data = $result->fetch_assoc();
+            return $data["Estado"];
+        }
+
         public function newUser($name, $id, $passwd){
             $query = "Select * from usuarios where CI=$id";
             $result = $this->conn->query($query);
             $data = $result->fetch_assoc();
             if($data["CI"] != $id){
-                $query = "INSERT INTO usuarios (CI, Nombre, Contrasena, Estado) VALUES ('$id', '$name', '$passwd', 'N/A')";
+                $query = "INSERT INTO usuarios (CI, Nombre, Contrasena, Estado) VALUES ('$id', '$name', '$passwd', 0)";
                 $this->conn->query($query);
-                $res = json_encode(["message" => "usuario Registrado"]);
+                $res = true;
             }else{
-                $res = json_encode(["message" => "El usuario ya existe"]);
+                $res = false;
             }
             return $res;
         }
