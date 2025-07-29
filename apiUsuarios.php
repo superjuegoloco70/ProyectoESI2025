@@ -42,7 +42,7 @@ switch ($method){
                 $result = $con->query($query);
                 $data = $result->fetch_assoc();
                 if($data["CI"] != $id){
-                    $query = "INSERT INTO usuarios (CI, Nombre, Contraseña, EsSocio) VALUES ('$id', '$name', '$passwd', 0)";
+                    $query = "INSERT INTO usuarios (CI, Nombre, Contraseña, Estado) VALUES ('$id', '$name', '$passwd', 'N/A')";
                     $con->query($query);
                     echo json_encode(["message" => "usuario Registrado"]);
                 }else{
