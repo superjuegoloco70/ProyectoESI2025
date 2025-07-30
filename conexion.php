@@ -40,6 +40,11 @@
             }
             return $res;
         }
+
+        public function registerHours($fecha, $horas){
+            $query = "INSERT INTO horastrabajadas (FechaTrabajo, N_Horas, CI_Trabajador) VALUES ('$fecha', '$horas', '$_SESSION[id]')";
+            $this->conn->query($query);
+        }
     }
 
 ?>
