@@ -7,12 +7,33 @@
 </head>
 <body>
     <h1>Registrar Horas</h1>
-    <form action="apiCooperativa.php" method="post">
-        <input type="hidden" name="_method" value="PUT">
-        <input type="date" name="fecha">
-        <input type="text" name="horas">
-        <button type="submit">Registrar Horas</button>
 
-    </form>
+        <input type="date" id="fecha">
+        <input type="text" id="horas">
+        <input type="hidden" id="action" value="registrar">
+        <button onclick="enviar()">Registrar Horas</button>
+
+        <script>
+            function enviar(){
+                const fecha = document.getElementById('fecha').value;
+                const horas = document.getElementById('horas').value;
+                const accion = document.getElementById('action').value;
+                fetch('apiCooperativa.php',
+                    {
+                        method: 'POST',
+                        headers:{'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            fecha: fecha,
+                            horas: horas,
+                            accion: accion
+                        })
+
+                    }
+                )
+                .then(response => response.json())
+                .catch(error => console.error('Error:', error));
+            }
+        </script>
+
 </body>
 </html>
