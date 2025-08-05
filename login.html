@@ -9,14 +9,14 @@
 <body>
     <h1>Iniciar Sesión</h1>
     <br>
-    <p>Ci</p>
+    <p>Ci  (Formato: 12345678)</p>
     <input type="text" id="Ci" required>
     <br>
     <p>Contraseña</p> 
     <input type="text" id="passwd" required>
     <br>
     <input type="hidden" id="action" value="login">
-    <button onclick="evniar()">Iniciar Sesión</button>
+    <button onclick="enviar()">Iniciar Sesión</button>
     
     <script>
         function enviar(){
@@ -27,16 +27,15 @@
                     {
                         method: 'GET',
                         headers:{'Content-Type': 'application/json'},
-                        body: JSON.stringify({
-                            ci: ci,
-                            passwd: passwd,
-                            accion: accion
-                        })
+                        ci: ci,
+                        passwd: passwd,
+                        accion: accion
 
                     }
-                )
-                .then(response => response.json())
-                .catch(error => console.error('Error:', error));
+            )
+            .then(response => response.json())
+            .catch(error => console.error('Error:', error));
+                
         }
     </script>
     

@@ -33,7 +33,7 @@
         const accion = document.getElementById('action').value;
         fetch('apiUsuarios.php',
                 {
-                    method: 'GET',
+                    method: 'POST',
                     headers:{'Content-Type': 'application/json'},
                     body: JSON.stringify({
                     ci: ci,

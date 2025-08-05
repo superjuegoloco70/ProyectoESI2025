@@ -12,7 +12,7 @@
             }
         }
 
-        public function checkCiPass($id, $passwd){
+        public function checkCiPass($id){
             $query = "Select Contrasena from usuarios where CI=$id";
             $result = $this->conn->query($query);
             $data = $result->fetch_assoc();
@@ -43,7 +43,7 @@
 
         public function registerHours($fecha, $horas){
             $query = "INSERT INTO horastrabajadas (FechaTrabajo, N_Horas, CI_Trabajador) VALUES ('$fecha', '$horas', '$_SESSION[id]')";
-            $this->conn->query($query);
+            $this->conn->query($query); 
         }
     }
 
