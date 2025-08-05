@@ -1,21 +1,28 @@
 <?php
 include "conexion.php";
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 header("Content-Type: application/json");
-$method = $_SERVER["REQUEST_METHOD"];
 $input = json_decode(file_get_contents("php://input"), true);
+$method = $_SERVER["REQUEST_METHOD"];
+
 
 session_start();
+
+$_SESSION["id"] = "0";
 
 $con = new db();
 
 switch ($method){
     case "GET":
         //Iniciar Sesión
-        if(isset($_GET["Ci"]) && isset($_GET["passwd"])){
-            $id = $_GET["Ci"];
-            $passwd=$_GET["passwd"];
-            if($id != null && $passwd != null){
+        if($input["accion"] == "login"){
+            $id = $input["ci"];
+            $passwd=$input["passwd"];
+            if($id != null && $passwd != null && $_SESSION["id"] != "0"){
                 $data = $con->checkCiPass($id, $passwd);
                 if($passwd == $data["Contrasena"]){
                     $_SESSION["id"] = $id;
@@ -30,6 +37,15 @@ switch ($method){
                 }else{
                     echo json_encode(["message" => "Error en el inicio de sesion"]);
                 } 
+            }elseif($_SESSION["id"] != "0"){
+                $result = $con->checkApproved($id);
+                if($result == 0){
+                    header("Location: esperandoaprobacion.html");
+                }elseif($result == 1){
+                    header("Location: usuarios.html");
+                }else{
+                    echo json_encode(["message" => "Error"]);
+                }
             }else{
                 echo json_encode(["message" => "Error en el inicio de sesion"]);
             }
@@ -39,18 +55,27 @@ switch ($method){
         break;
      case 'POST':
         //Registro Usuario
-        if(isset($_POST["Ci"]) && isset($_POST["passwd"] ) && isset($_POST["name"])){
-            $name = $_POST['name'];
-            $id = $_POST['Ci'];
-            $passwd = $_POST['passwd'];
-            if($id != null && $passwd != null && $name != null){
+        if($input["accion"] == "registrar"){
+            $name = $input['name'];
+            $id = $input['Ci'];
+            $passwd = $input['passwd'];
+            if($id != null && $passwd != null && $name != null && $_SESSION["id"] == "0"){
                 $result = $con->newUser($name, $id, $passwd);
                 if ($result == true){
+                    $_SESSION["id"] = $id;
                     header("Location: esperandoaprobacion.html");
                 }else{
                     json_encode(["message" => "El usuario ya existe"]);
                 }
-                
+            }elseif($_SESSION["id"] != "0"){
+                $result = $con->checkApproved($id);
+                if($result == 0){
+                    header("Location: esperandoaprobacion.html");
+                }elseif($result == 1){
+                    header("Location: usuarios.html");
+                }else{
+                    echo json_encode(["message" => "Error"]);
+                }
             }else{
                 echo json_encode(["message" => "Error en el registro"]);
             }

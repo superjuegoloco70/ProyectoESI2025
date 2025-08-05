@@ -9,18 +9,36 @@
 <body>
     <h1>Iniciar Sesión</h1>
     <br>
-    <form action="apiUsuarios.php" method="get" >
+    <p>Ci</p>
+    <input type="text" id="Ci" required>
+    <br>
+    <p>Contraseña</p> 
+    <input type="text" id="passwd" required>
+    <br>
+    <input type="hidden" id="action" value="login">
+    <button onclick="evniar()">Iniciar Sesión</button>
+    
+    <script>
+        function enviar(){
+            const ci = document.getElementById('Ci').value;
+            const passwd = document.getElementById('passwd').value;
+            const accion = document.getElementById('action').value;
+            fetch('apiUsuarios.php',
+                    {
+                        method: 'GET',
+                        headers:{'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            ci: ci,
+                            passwd: passwd,
+                            accion: accion
+                        })
 
-            <p>Ci</p>
-            <input type="text" name="Ci" >
-            <br>
-
-            <p>Contraseña</p> 
-            <input type="text" name="passwd">
-            <br>
-            
-            <button type="submit" name="login">Iniciar Sesión</button>
-        </form>
+                    }
+                )
+                .then(response => response.json())
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
     
 </body>
 </html>
