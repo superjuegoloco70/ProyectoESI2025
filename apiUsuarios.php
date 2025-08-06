@@ -11,7 +11,9 @@ $input = json_decode(file_get_contents("php://input"), true);
 $method = $_SERVER["REQUEST_METHOD"];
 
 
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 
 
@@ -24,63 +26,78 @@ if(!isset($_SESSION["id"])){
 switch ($method){
     case "GET":
         //Iniciar Sesión
-        if($input["accion"] == "login" && $_SESSION["id"] = "0"){
-            $data = $con->checkCiPass($input["ci"]);
-            if($input["passwd"] == $data["Contrasena"]){  
-                $result = $con->checkApproved($input["ci"]);
+        if($_GET["accion"] == "login" && $_SESSION["id"] == "0"){
+            $data = $con->checkCiPass($_GET["ci"]);
+            if($_GET["passwd"] == $data["Contrasena"]){  
+                $result = $con->checkApproved($_GET["ci"]);
                 if($result == 0){
-                    $_SESSION["id"] = $input["ci"]; 
-                    header("Location: esperandoaprobacion.html");
+                    $_SESSION["id"] = $_GET["ci"]; 
+                    echo json_encode(["redirect" => "esperandoaprobacion.html"]);
+                    exit;
                 }elseif($result == 1){
-                    $_SESSION["id"] = $input["ci"]; 
-                    header("Location: usuarios.html");
+                    $_SESSION["id"] = $_GET["ci"]; 
+                    echo json_encode(["redirect" => "usuarios.html"]);
+                    exit;
                 }else{
                     echo json_encode(["message" => "Error"]);
+                    exit;
                 }
-                }else{
-                    echo json_encode(["message" => "Error en el inicio de sesion"]);
-                } 
+            }else{
+                echo json_encode(["message" => "Error en el inicio de sesion"]);
+                exit;
+            } 
         }elseif($_SESSION["id"] != "0"){
-            $result = $con->checkApproved($input["ci"]);
+            $result = $con->checkApproved($_GET["ci"]);
             if($result == 0){
-                    header("Location: esperandoaprobacion.html");
+                    echo json_encode(["redirect" => "esperandoaprobacion.html"]);
+                    exit;
             }elseif($result == 1){
-                header("Location: usuarios.html");
+                echo json_encode(["redirect" => "usuarios.html"]);
+                exit;
             }else{
                 echo json_encode(["message" => "Error"]);
+                exit;
             }
         }else{
             echo json_encode(["message" => "Error en el inicio de sesion"]);
+            exit;
         }
         break;
      case 'POST':
         //Registro Usuario
         if($input["accion"] == "registrar"){
             $name = $input['name'];
-            $id = $input['Ci'];
+            $id = $input['ci'];
             $passwd = $input['passwd'];
             if($id != null && $passwd != null && $name != null){
                 $result = $con->newUser($name, $id, $passwd);
                 if ($result == true){
                     $_SESSION["id"] = $id;
-                    header("Location: esperandoaprobacion.html");
+                    echo json_encode(["redirect" => "esperandoaprobacion.html"]);
+                    exit;
                 }else{
-                    json_encode(["message" => "El usuario ya existe"]);
+                    echo json_encode(["message" => "El usuario ya existe"]);
+                    exit;
                 }
             }elseif($_SESSION["id"] != "0"){
                 $result = $con->checkApproved($_SESSION["id"]);
                 if($result == 0){
-                    header("Location: esperandoaprobacion.html");
+                    echo json_encode(["redirect" => "esperandoaprobacion.html"]);
+                    exit;
                 }elseif($result == 1){
-                    header("Location: usuarios.html");
+                    echo json_encode(["redirect" => "usuarios.html"]);
+                    exit;
                 }else{
                     echo json_encode(["message" => "Error"]);
+                    exit;
                 }
             }else{
                 echo json_encode(["message" => "Error en el registro"]);
+                exit;
             }
         }else{
             echo json_encode(["message" => "Error en el registro"]);
+            exit;
         }
         
         break;

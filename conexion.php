@@ -1,6 +1,8 @@
 <?php
 
+    if (session_status() == PHP_SESSION_NONE) {
     session_start();
+    }
 
     class db{
 
@@ -31,7 +33,7 @@
             $query = "Select * from usuarios where CI=$id";
             $result = $this->conn->query($query);
             $data = $result->fetch_assoc();
-            if($data["CI"] != $id){
+            if(!$data){
                 $query = "INSERT INTO usuarios (CI, Nombre, Contrasena, Estado) VALUES ('$id', '$name', '$passwd', 0)";
                 $this->conn->query($query);
                 $res = true;
