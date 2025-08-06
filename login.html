@@ -2,43 +2,51 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=, initial-scale=1.0">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>Iniciar Sesión</h1>
-    <br>
-    <p>Ci</p>
+    <p>Ci (Formato: 12345678)</p>
     <input type="text" id="Ci" required>
     <br>
     <p>Contraseña</p> 
-    <input type="text" id="passwd" required>
+    <input type="password" id="passwd" required>
     <br>
     <input type="hidden" id="action" value="login">
-    <button onclick="evniar()">Iniciar Sesión</button>
+    <button onclick="enviar()">Iniciar Sesión</button>
     
     <script>
-        function enviar(){
-            const ci = document.getElementById('Ci').value;
-            const passwd = document.getElementById('passwd').value;
+        function enviar() {
+            const ci = document.getElementById('Ci').value.trim();
+            const passwd = document.getElementById('passwd').value.trim();
             const accion = document.getElementById('action').value;
-            fetch('apiUsuarios.php',
-                    {
-                        method: 'GET',
-                        headers:{'Content-Type': 'application/json'},
-                        body: JSON.stringify({
-                            ci: ci,
-                            passwd: passwd,
-                            accion: accion
-                        })
 
-                    }
-                )
-                .then(response => response.json())
-                .catch(error => console.error('Error:', error));
+            const url = `apiUsuarios.php?ci=${encodeURIComponent(ci)}&passwd=${encodeURIComponent(passwd)}&accion=${encodeURIComponent(accion)}`;
+
+            fetch(url)
+            .then(response => {
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                return response.json();
+            } else {
+                throw new Error("La respuesta no es JSON válida");
+            }
+            })
+            .then(data => {
+            if (data.redirect) {
+                window.location.href = data.redirect;
+            } else {
+                console.log('Respuesta:', data);
+                alert(data.message || "Error en el inicio de sesión.");
+            }
+            })
+            .catch(error => {
+            console.error('Error:', error);
+            alert("Ocurrió un error al iniciar sesión.");
+            });
         }
     </script>
-    
 </body>
 </html>
