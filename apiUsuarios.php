@@ -26,7 +26,23 @@ if(!isset($_SESSION["id"])){
 switch ($method){
     case "GET":
         //Iniciar Sesión
-        if($_GET["accion"] == "login" && $_SESSION["id"] == "0"){
+        if($_GET["accion"] == "login"){
+            if($_SESSION["id"] != "0"){
+                $result = $con->checkApproved($_GET["ci"]);
+                if($result == 0){
+                        echo json_encode(["redirect" => "esperandoaprobacion.html"]);
+                        exit;
+                }elseif($result == 1){
+                    echo json_encode(["redirect" => "usuarios.html"]);
+                    exit;
+                }elseif($result == 2){
+                    echo json_encode(["redirect" => "admins.html"]);
+                    exit;
+                }else{
+                    echo json_encode(["message" => "Error"]);
+                    exit;
+                }
+            }
             $data = $con->checkCiPass($_GET["ci"]);
             if($_GET["passwd"] == $data["Contrasena"]){  
                 $result = $con->checkApproved($_GET["ci"]);
@@ -46,26 +62,40 @@ switch ($method){
                 echo json_encode(["message" => "Error en el inicio de sesion"]);
                 exit;
             } 
-        }elseif($_SESSION["id"] != "0"){
-            $result = $con->checkApproved($_GET["ci"]);
-            if($result == 0){
-                    echo json_encode(["redirect" => "esperandoaprobacion.html"]);
-                    exit;
-            }elseif($result == 1){
-                echo json_encode(["redirect" => "usuarios.html"]);
-                exit;
-            }else{
-                echo json_encode(["message" => "Error"]);
-                exit;
+        }elseif($_GET["accion"] == "getUsers"){
+            $data = $con->getUsers();
+            /*$res = "";
+            foreach($data["CI"] as $ci => $user){
+                $res[$user] = "CI: " . $data[$user] . " Aprovado: " . $data[$user   ]["Estado"] . "<br>";
             }
+            echo json_encode(["message" => $res]);  
+            echo var_dump($data);*/
+            echo json_encode(["message" => $data]);  
+            exit;
         }else{
-            echo json_encode(["message" => "Error en el inicio de sesion"]);
+            echo json_encode(["message" => "Error en la accion" . $_GET["accion"]]);
             exit;
         }
         break;
      case 'POST':
         //Registro Usuario
         if($input["accion"] == "registrar"){
+            if($_SESSION["id"] != "0"){
+                $result = $con->checkApproved($_SESSION["id"]);
+                if($result == 0){
+                    echo json_encode(["redirect" => "esperandoaprobacion.html"]);
+                    exit;
+                }elseif($result == 1){
+                    echo json_encode(["redirect" => "usuarios.html"]);
+                    exit;
+                }elseif($result == 2){
+                    echo json_encode(["redirect" => "admins.html"]);
+                    exit;
+                }else{
+                    echo json_encode(["message" => "Error"]);
+                    exit;
+                }
+            }
             $name = $input['name'];
             $id = $input['ci'];
             $passwd = $input['passwd'];
@@ -79,22 +109,12 @@ switch ($method){
                     echo json_encode(["message" => "El usuario ya existe"]);
                     exit;
                 }
-            }elseif($_SESSION["id"] != "0"){
-                $result = $con->checkApproved($_SESSION["id"]);
-                if($result == 0){
-                    echo json_encode(["redirect" => "esperandoaprobacion.html"]);
-                    exit;
-                }elseif($result == 1){
-                    echo json_encode(["redirect" => "usuarios.html"]);
-                    exit;
-                }else{
-                    echo json_encode(["message" => "Error"]);
-                    exit;
-                }
             }else{
                 echo json_encode(["message" => "Error en el registro"]);
                 exit;
             }
+        }elseif($input["accion"] == "actualizarEstado"){
+            
         }else{
             echo json_encode(["message" => "Error en el registro"]);
             exit;

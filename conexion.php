@@ -47,6 +47,17 @@
             $query = "INSERT INTO horastrabajadas (FechaTrabajo, N_Horas, CI_Trabajador) VALUES ('$fecha', '$horas', '$_SESSION[id]')";
             $this->conn->query($query); 
         }
+
+        public function getUsers(){
+            $query = "SELECT * FROM usuarios";
+            $result = $this->conn->query($query);
+            foreach($result as $value){
+                $data = $result->fetch_assoc();
+                $res[$data["CI"]] = $data;
+            }
+            
+            return $res;
+        }
     }
 
 ?>
