@@ -51,12 +51,12 @@
         public function getUsers(){
             $query = "SELECT * FROM usuarios";
             $result = $this->conn->query($query);
-            foreach($result as $value){
-                $data = $result->fetch_assoc();
-                $res[$data["CI"]] = $data;
+            
+            while($row = mysqli_fetch_assoc($result)){
+                $json[] = $row;
             }
             
-            return $res;
+            return $json;
         }
     }
 
