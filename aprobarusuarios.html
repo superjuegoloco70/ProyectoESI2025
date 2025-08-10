@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <input type="hidden" id="action" value="getWaiting">
+
+    <table border="1" id="tablaUsuarios">
+        <thead>
+            <tr>
+                <th>
+                    CI
+                </th>
+                <th>
+                    Nombre
+                </th>
+                <th>
+                    Estado
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+
+    </table>
+
+    <script>
+        function mostrarUsuarios(){
+
+            const accion = document.getElementById('action').value;
+            const url = `apiUsuarios.php?accion=${encodeURIComponent(accion)}`;
+
+            fetch(url)
+            .then(response => {
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                return response.json();
+            }else{
+                throw new Error("La respuesta no es JSON válida");
+            }
+            })
+            .then(data => {
+            if (Array.isArray(data.message)) {
+                llenarTabla(data.message);
+            }else{
+                throw new Error("El formato del JSON no es válido");
+            }
+            })
+            .catch(error => {
+            console.error('Error:', error);
+            alert("Ocurrió un error al mostrar usuarios.");
+            });
+        }
+
+        function llenarTabla(usuarios){
+            const tabla = document.getElementById('tablaUsuarios');
+            const tbody = tabla.querySelector('tbody');
+
+            tbody.innerHTML = '';
+
+            usuarios.forEach(usuario => {
+
+            const fila = document.createElement('tr');
+
+            fila.innerHTML = `
+            <td>
+                ${usuario.CI}
+            </td>
+            <td>
+                ${usuario.Nombre}
+            </td>
+            <td>
+                <button onclick="aprobarUsuario('${usuario.CI}')">Activar</button>
+            </td>
+            `;
+            
+            tbody.appendChild(fila);
+            });
+
+            tabla.style.display = 'table';
+
+        }
+
+        function aprobarUsuario(ci){
+            fetch('apiUsuarios.php',
+                {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        accion: 'Aprobar',
+                        CI: ci
+                    })
+                }
+            )
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                alert(`Estado del usuario con CI ${ci} actualizado`);
+                mostrarUsuarios();
+                } else {
+                alert(`No se pudo actualizar el estado para CI ${ci}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error al cambiar estado:', error);
+                alert('Ocurrió un error al cambiar el estado.');
+            });
+        }
+
+        window.onload = function () {
+            mostrarUsuarios();
+        };
+
+    </script>
+
+</body>
+</html>
