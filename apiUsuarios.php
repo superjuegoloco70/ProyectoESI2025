@@ -61,15 +61,10 @@ switch ($method){
             }else{
                 echo json_encode(["message" => "Error en el inicio de sesion"]);
                 exit;
-            } 
-        }elseif($_GET["accion"] == "getUsers"){
-            $data = $con->getUsers();
-            /*$res = "";
-            foreach($data["CI"] as $ci => $user){
-                $res[$user] = "CI: " . $data[$user] . " Aprovado: " . $data[$user   ]["Estado"] . "<br>";
             }
-            echo json_encode(["message" => $res]);  
-            echo var_dump($data);*/
+        //Obtener a las personas con Estado = 0
+        }elseif($_GET["accion"] == "getWaiting"){
+            $data = $con->getWaiting();
             echo json_encode(["message" => $data]);  
             exit;
         }else{
@@ -113,10 +108,17 @@ switch ($method){
                 echo json_encode(["message" => "Error en el registro"]);
                 exit;
             }
-        }elseif($input["accion"] == "actualizarEstado"){
+        //Actualizar el estado a 1
+        }elseif($input["accion"] == "Aprobar"){
+            $id = $input['CI'];
+            if($con->aprobarUsuario($id)){
+                echo json_encode(['success' => true]);
+            }else{
+                echo json_encode(['success' => false, 'error' => "Error al actualizar"]);
+            }
             
         }else{
-            echo json_encode(["message" => "Error en el registro"]);
+            echo json_encode(["message" => "Error"]);
             exit;
         }
         

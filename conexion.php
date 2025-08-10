@@ -48,15 +48,27 @@
             $this->conn->query($query); 
         }
 
-        public function getUsers(){
-            $query = "SELECT * FROM usuarios";
+        public function getWaiting(){
+            $query = "SELECT * FROM usuarios WHERE Estado = 0";
             $result = $this->conn->query($query);
-            
             while($row = mysqli_fetch_assoc($result)){
                 $json[] = $row;
             }
             
             return $json;
+        }
+
+        public function aprobarUsuario($ci){
+            $query = "UPDATE usuarios set Estado = 1 WHERE CI = '$ci'";
+            $res = false;
+            if($this->conn->query($query)){
+                $res = true;
+            }else{
+                $res = false;
+            }
+
+            return $res;
+
         }
     }
 
