@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Agregar Pago</h1>
+
+    <p>CI (12345678)</p>
+    <input type="number" id="CI" required>
+    <br>
+    <p>Coste Total</p>
+    <input type="number" id="coste" required>
+    <br>
+    <p>Número de pagos</p>
+    <select id="numeroPagos">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+    </select>
+    <br>
+    <input type="hidden" value="agregarPago" id="action">
+
+    <button onclick="agregarpago()">Agregar Pago</button>
+
+    <script>
+        function agregarpago(){
+            const ci = document.getElementById("CI");
+            const coste = document.getElementById("coste");
+            const accion = document.getElementById("action");
+            const numeroPagos = document.getElementById("numeroPagos");
+            fetch("apiUsuarios.php",{
+             
+                method: "POST",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                accion: accion.value,
+                CI: ci.value,
+                coste: coste.value,
+                numeroPagos: numeroPagos.value
+                })
+
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Respuesta del servidor:", data);
+                if (data.status === "ok") {
+                    alert("Pago agregado correctamente.");
+                } else {
+                    alert("Hubo un error al agregar el pago.");
+                }
+            })
+        }
+    </script>
+
+</body>
+</html>

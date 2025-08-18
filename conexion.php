@@ -70,6 +70,39 @@
             return $res;
 
         }
+
+        public function agregarPago($ci, $coste, $fecha){
+            $query = "INSERT INTO cuotas (CI_Prestarario, Coste, Vencimiento) VALUES ('$ci', '$coste', '$fecha')";
+            $this->conn->query($query);
+        }
+
+        public function getPagos($ci){
+            $query = "SELECT * FROM cuotas WHERE CI_Prestarario = '$ci'";
+            $result = $this->conn->query($query);
+            while($row = mysqli_fetch_assoc($result)){
+                $json[] = $row;
+            }
+
+            return $json;
+        }
+
+        public function agregarComprobantePago($id, $comprobante){
+            $stmt = $this->conn->prepare("UPDATE cuotas SET ConfirmantePago = ? WHERE ID_Cuota = ?");
+            if (!$stmt) {
+                echo json_encode(["status" => "error", "mensaje" => "Error al preparar la consulta: " . $this->conn->error]);
+                exit;
+            }
+
+            
+            $null = NULL;
+            $stmt->bind_param("bi", $null, $id);
+            $stmt->send_long_data(0, $comprobante);
+            $res = $stmt->execute();
+            $stmt->close();
+            return $res;
+
+        } 
     }
+    
 
 ?>

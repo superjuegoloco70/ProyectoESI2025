@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.40, for Win64 (x86_64)
 --
--- Host: localhost    Database: 3mhdr
+-- Host: 127.0.0.1    Database: 3mhdr
 -- ------------------------------------------------------
--- Server version	5.5.5-10.4.27-MariaDB
+-- Server version	5.5.5-10.4.32-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -41,7 +41,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (81,'lala','898','',NULL,0),(85,'sadsad','2131','',NULL,NULL),(89,'Pepe Silva','567','',NULL,NULL),(589,'Koko','hola123','',NULL,NULL),(999,'Aleman','pepito45',NULL,NULL,1),(5968954,'fsdfds','opopdas',NULL,NULL,0),(11111111,'Carlita','54321','',NULL,NULL),(56984963,'P4Aloss','221220071',NULL,NULL,0);
+INSERT INTO `usuarios` VALUES (81,'lala','898','',NULL,0),(85,'sadsad','2131','',NULL,NULL),(89,'Pepe Silva','567','',NULL,NULL),(589,'Koko','hola123','',NULL,NULL),(789,'OOO','qwerty',NULL,NULL,0),(999,'Aleman','pepito45',NULL,NULL,1),(5668,'1234','9090',NULL,NULL,0),(12313,'Hola','jhiaopj',NULL,NULL,0),(999888,'Hola','pololo',NULL,NULL,0),(5968954,'fsdfds','opopdas',NULL,NULL,0),(9998887,'Hola','holita',NULL,NULL,0),(11111111,'Carlita','54321','',NULL,NULL),(56984963,'P4Aloss','221220071',NULL,NULL,1);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-07-29 18:44:14
+-- Dump completed on 2025-08-17 21:23:52

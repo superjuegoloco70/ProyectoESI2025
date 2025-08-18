@@ -116,11 +116,27 @@ switch ($method){
             }else{
                 echo json_encode(['success' => false, 'error' => "Error al actualizar"]);
             }
-            
+        
+        //Agregar Pago
+        }elseif($input["accion"] == "agregarPago"){
+            $id = $input["CI"];
+            $costeTotal = $input["coste"];
+            $numeroPagos = $input["numeroPagos"];
+            $fechaPresente = new DateTime();
+            $coste = $costeTotal / $numeroPagos;
+
+            for($x = 1; $x <= $numeroPagos; $x++){
+                $fechaPago = clone $fechaPresente;
+                $fechaPago->modify("+$x month");
+                $fecha = $fechaPago->format("Y-m-d");
+                $con->agregarPago($id, $coste, $fecha);
+            }
+
         }else{
-            echo json_encode(["message" => "Error"]);
+            echo json_encode(["message" => "Error en la accion"]);
             exit;
         }
+        
         
         break;
 
