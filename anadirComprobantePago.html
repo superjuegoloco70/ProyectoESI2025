@@ -12,9 +12,6 @@
         <thead>
             <tr>
                 <th>
-                    CI
-                </th>
-                <th>
                     Coste
                 </th>
                 <th>
@@ -37,7 +34,7 @@
     <script>
         function mostrarPagos(){
 
-            const accion = "getPagos";
+            const accion = "getPagosVacios";
             const url = `apiCooperativa.php?accion=${encodeURIComponent(accion)}`;
 
             fetch(url)
@@ -76,9 +73,6 @@
 
             fila.innerHTML = `
             <td>
-                ${pago.CI_Prestarario}
-            </td>
-            <td>
                 ${pago.Coste}
             </td>
             <td>
@@ -88,7 +82,7 @@
                 <input type="file" accept="image/*" id="${fileInputId}">
             </td>
             <td>
-                <button onclick="aprobarpago('${pago.ID_Cuota}', '${fileInputId}')">Actualizar</button>
+                <button onclick="anadirComprobante('${pago.ID_Cuota}', '${fileInputId}')">Actualizar</button>
             </td>
             `;
             
@@ -99,7 +93,7 @@
 
         }
 
-        function aprobarpago(idCuota, inputID){
+        function anadirComprobante(idCuota, inputID){
             const inputFile = document.getElementById(inputID);
             const file = inputFile.files[0];
             if (!file) {
@@ -125,6 +119,7 @@
                 .then(data => {
                     if (data.status === "ok") {
                         alert("Comprobante subido correctamente.");
+                        mostrarPagos();
                     } else {
                         alert("Error al subir el comprobante.");
                     }

@@ -76,8 +76,8 @@
             $this->conn->query($query);
         }
 
-        public function getPagos($ci){
-            $query = "SELECT * FROM cuotas WHERE CI_Prestarario = '$ci'";
+        public function getPagosVacios($ci){
+            $query = "SELECT * FROM cuotas WHERE CI_Prestarario = '$ci' AND ConfirmantePago IS NULL";
             $result = $this->conn->query($query);
             while($row = mysqli_fetch_assoc($result)){
                 $json[] = $row;
@@ -87,7 +87,8 @@
         }
 
         public function agregarComprobantePago($id, $comprobante){
-            $stmt = $this->conn->prepare("UPDATE cuotas SET ConfirmantePago = ? WHERE ID_Cuota = ?");
+            $query = "UPDATE cuotas SET ConfirmantePago = ? WHERE ID_Cuota = ?";
+            $stmt = $this->conn->prepare($query);
             if (!$stmt) {
                 echo json_encode(["status" => "error", "mensaje" => "Error al preparar la consulta: " . $this->conn->error]);
                 exit;
@@ -101,7 +102,63 @@
             $stmt->close();
             return $res;
 
-        } 
+        }
+
+        public function getPagosComprobante(){
+            $query = "SELECT * FROM cuotas WHERE PagoAprobado = 0 AND ConfirmantePago IS NOT NULL";
+            $stmt = $this->conn->prepare($query);
+            $json = [];
+            if($stmt->execute()){
+                $result = $stmt->get_result();
+                while ($row = $result->fetch_assoc()) {
+                    if (!is_null($row['ConfirmantePago'])) {
+                        $row['ConfirmantePago'] = base64_encode($row['ConfirmantePago']);
+                    }
+                    $json[] = $row;
+                }
+            }
+            if(count($json) == 0){
+                return [
+                    "status" => "success",
+                    "message" => "No hay pagos pendientes."
+                ];
+            }
+
+            return [
+                "status" => "success",
+                "message" => $json
+            ];
+        }
+
+        public function aprobarComprobantePago($id){
+            $query = "UPDATE cuotas SET PagoAprobado = ? WHERE ID_Cuota = ?";
+            $stmt = $this->conn->prepare($query);
+            if (!$stmt) {
+                echo json_encode(["status" => "error", "mensaje" => "Error al preparar la consulta: " . $this->conn->error]);
+                exit;
+            }
+
+            $pagoAprobado = 1;
+            $stmt->bind_param("ii", $pagoAprobado, $id);
+            $res = $stmt->execute();
+            $stmt->close();
+            return $res;
+        }
+
+        public function denegarComprobantePago($id){
+            $query = "UPDATE cuotas SET PagoAprobado = ?, ConfirmantePago = NULL WHERE ID_Cuota = ?";
+            $stmt = $this->conn->prepare($query);
+            if (!$stmt) {
+                echo json_encode(["status" => "error", "mensaje" => "Error al preparar la consulta: " . $this->conn->error]);
+                exit;
+            }
+
+            $pagoAprobado = 0;
+            $stmt->bind_param("ii", $pagoAprobado, $id);
+            $res = $stmt->execute();
+            $stmt->close();
+            return $res;
+        }
     }
     
 

@@ -46,6 +46,24 @@ switch ($method){
             }
 
             exit;
+        }elseif($input["accion"] == "aprobarComprobante"){
+            $idCuota = $input["idCuota"];
+             if($con->aprobarComprobantePago($idCuota)){
+                echo json_encode(["status" => "ok"]);
+                exit;
+            }else{
+                echo json_encode(["status" => "error", "mensaje" => "No se pudo guardar en la base de datos."]);
+                exit;
+            }
+        }elseif($input["accion"] == "denegarComprobante"){
+            $idCuota = $input["idCuota"];
+             if($con->denegarComprobantePago($idCuota)){
+                echo json_encode(["status" => "ok"]);
+                exit;
+            }else{
+                echo json_encode(["status" => "error", "mensaje" => "No se pudo guardar en la base de datos."]);
+                exit;
+            }
         }else{
             echo json_encode(["message" => "Error en la accion"]);
         }
@@ -55,12 +73,17 @@ switch ($method){
         
 
     case "GET":
-        if($_GET["accion"] == "getPagos"){
-            $data = $con->getPagos($_SESSION["id"]);
+        if($_GET["accion"] == "getPagosVacios"){
+            $data = $con->getPagosVacios($_SESSION["id"]);
             echo json_encode(["message" => $data]);
             exit;
-        }else{
-            echo json_encode(["message" => "Error en la accion" . $_GET["accion"]]);
+        }elseif($_GET["accion"] == "getPagosComprobante"){
+            $data = $con->getPagosComprobante();
+            echo json_encode($data);
+            exit;
+        }
+        else{
+            echo json_encode(["message" => "Error en la accion"]);
             exit;
         }
         break;

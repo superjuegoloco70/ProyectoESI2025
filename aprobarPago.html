@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Aprobar Pago</h1>
+    <br>
+    <table border="1" id="tablaPagos">
+        <thead>
+            <tr>
+                <th>
+                    CI
+                </th>
+                <th>
+                    Coste
+                </th>
+                <th>
+                    Vencimiento
+                </th>
+                <th>
+                    Comprobante
+                </th>
+                <th>
+                    Aprobar
+                </th>
+                <th>
+                    Denegar
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+
+    </table>
+
+    <div id="mensajeSinDatos" style="display:none;"></div>
+    <script>
+        function mostrarPagos(){
+
+            const accion = "getPagosComprobante";
+            const url = `apiCooperativa.php?accion=${encodeURIComponent(accion)}`;
+
+            fetch(url)
+            .then(response => {
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                return response.json();
+            }else{
+                throw new Error("La respuesta no es JSON válida");
+            }
+            })
+            .then(data => {
+                if (data.status === "success") {
+                    if (Array.isArray(data.message) && data.message.length > 0) {
+                        llenarTabla(data.message);
+                        document.getElementById('mensajeSinDatos').style.display = 'none';
+                        document.getElementById('tablaPagos').style.display = 'table';
+                    } else {
+                        // No hay datos, mostrar mensaje
+                        limpiarTabla();
+                        document.getElementById('tablaPagos').style.display = 'none';
+                        const mensajeElem = document.getElementById('mensajeSinDatos');
+                        mensajeElem.textContent = data.message || "No hay pagos pendientes.";
+                        mensajeElem.style.display = 'block';
+                    }
+                } else {
+                    throw new Error("Error en la respuesta del servidor");
+                }
+            })
+            .catch(error => {
+            console.error('Error:', error);
+            alert("Ocurrió un error al mostrar pagos.");
+            });
+        }
+
+        function llenarTabla(pagos){
+            const tabla = document.getElementById('tablaPagos');
+            const tbody = tabla.querySelector('tbody');
+
+            tbody.innerHTML = '';
+
+            pagos.forEach(pago => {
+
+            const fila = document.createElement('tr');
+            const fileInputId = `file_${pago.ID_Cuota}`;
+
+            let imagenHTML = 'Sin imagen';
+            if (pago.ConfirmantePago) {
+                imagenHTML = `<img src="data:image/jpeg;base64,${pago.ConfirmantePago}" alt="Comprobante" width="100"/>`;
+            }
+
+
+            fila.innerHTML = `
+            <td>
+                ${pago.CI_Prestarario}
+            </td>
+            <td>
+                ${pago.Coste}
+            </td>
+            <td>
+                ${pago.Vencimiento}
+            </td>
+            <td>
+                ${imagenHTML}
+            </td>
+            <td>
+                <button onclick="aprobarPago('${pago.ID_Cuota}')">Aprobar</button>
+            </td>
+            <td>
+                <button onclick="denegarPago('${pago.ID_Cuota}')">Denegar</button>
+            </td>
+            `;
+            
+            tbody.appendChild(fila);
+            });
+
+            tabla.style.display = 'table';
+
+        }
+
+        function limpiarTabla() {
+            const tbody = document.querySelector('#tablaPagos tbody');
+            if (tbody) {
+                tbody.innerHTML = '';
+            }
+        }
+
+        function aprobarPago(id){
+            fetch("apiCooperativa.php",{
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        accion: "aprobarComprobante",
+                        idCuota: id
+                    })
+                })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "ok") {
+                    alert("Aprobado Correctamente.");
+                    mostrarPagos();
+                } else {
+                    alert("Error al aprobar.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Ocurrió un error al aprobar.");
+            });
+        }
+
+        function denegarPago(id){
+            fetch("apiCooperativa.php",{
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        accion: "denegarComprobante",
+                        idCuota: id
+                    })
+                })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "ok") {
+                    alert("Denegado Correctamente.");
+                    mostrarPagos();
+                } else {
+                    alert("Error al denegar.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Ocurrió un error al denegar.");
+            });
+        }
+
+        window.onload = function () {
+            mostrarPagos();
+        };
+    </script>
+</body>
+</html>
