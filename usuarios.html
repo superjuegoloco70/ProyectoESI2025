@@ -9,5 +9,36 @@
     <a href="registrarHoras.html">Registrar Horas</a>
     <br>
     <a href="anadirComprobantePago.html">Añadir el comprobante del pago</a>
+
+    <script>
+        function verificarSesion(){
+            const url = `apiUsuarios.php?accion=verificarSesion`;
+            fetch(url)
+            .then(response => {
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                return response.json();
+            } else {
+                throw new Error("La respuesta no es JSON válida");
+            }
+            })
+            .then(data => {
+            if (data.redirect) {
+                window.location.href = data.redirect;
+            } else {
+                console.log('Respuesta:', data);
+                alert(data.message || "Error en el inicio de sesión.");
+            }
+            })
+            .catch(error => {
+            console.error('Error:', error);
+            alert("Ocurrió un error al iniciar sesión.");
+            });
+        }
+
+        window.onload = function () {
+            verificarSesion();
+        };
+    </script>
 </body>
 </html>

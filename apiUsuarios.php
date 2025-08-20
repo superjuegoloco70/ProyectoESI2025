@@ -67,6 +67,12 @@ switch ($method){
             $data = $con->getWaiting();
             echo json_encode(["message" => $data]);  
             exit;
+        //Verificar que se inició la sesión
+        }elseif($_GET["accion"] == "verificarSesion"){
+            if($_SESSION["id"] == 0){
+                echo json_encode(["redirect" => "login.html"]);
+            }
+            exit;
         }else{
             echo json_encode(["message" => "Error en la accion" . $_GET["accion"]]);
             exit;
