@@ -32,6 +32,14 @@
                     }
                 )
                 .then(response => response.json())
+                .then(data => {
+                console.log("Respuesta del servidor:", data);
+                if (data.status === "ok") {
+                    alert("Horas Registradas correctamente.");
+                } else {
+                    alert("Hubo un error al registrar horas.");
+                }
+                })
                 .catch(error => console.error('Error:', error));
             }
 
@@ -54,10 +62,6 @@
                     alert(data.message || "Error en el inicio de sesión.");
                 }
                 })
-                .catch(error => {
-                console.error('Error:', error);
-                alert("Ocurrió un error al iniciar sesión.");
-                });
             }
 
             window.onload = function () {

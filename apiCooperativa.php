@@ -20,7 +20,7 @@ switch ($method){
     case "POST":
         if($input["accion"] == "registrar"){
             $con->registerHours($input["fecha"], $input["horas"]);
-            echo json_encode(["message" => "Horas Registradas Correctamente"]);        
+            echo json_encode(["status" => "ok"]);        
         }elseif($input["accion"] == "subirComprobante"){
             $idCuota = $input["idCuota"];
             $comprobante = $input["comprobante"];
