@@ -6,7 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Aprobar Pago</h1>
+    <h1>Pagos Aprobados</h1>
     <br>
     <table border="1" id="tablaPagos">
         <thead>
@@ -26,12 +26,6 @@
                 <th>
                     Comprobante
                 </th>
-                <th>
-                    Aprobar
-                </th>
-                <th>
-                    Denegar
-                </th>
             </tr>
         </thead>
         <tbody>
@@ -44,8 +38,8 @@
     <script>
         function mostrarPagos(){
 
-            const accion = "getPagosComprobante";
-            const url = `apiCooperativa.php?accion=${encodeURIComponent(accion)}`;
+            const accion = "getPagosAprobados";
+            const url = `apiUsuarios.php?accion=${encodeURIComponent(accion)}`;
 
             fetch(url)
             .then(response => {
@@ -67,7 +61,7 @@
                         limpiarTabla();
                         document.getElementById('tablaPagos').style.display = 'none';
                         const mensajeElem = document.getElementById('mensajeSinDatos');
-                        mensajeElem.textContent = data.message || "No hay pagos pendientes.";
+                        mensajeElem.textContent = data.message || "No hay pagos aprobados.";
                         mensajeElem.style.display = 'block';
                     }
                 } else {
@@ -113,12 +107,6 @@
             <td>
                 ${imagenHTML}
             </td>
-            <td>
-                <button onclick="aprobarPago('${pago.ID_Cuota}')">Aprobar</button>
-            </td>
-            <td>
-                <button onclick="denegarPago('${pago.ID_Cuota}')">Denegar</button>
-            </td>
             `;
             
             tbody.appendChild(fila);
@@ -135,54 +123,7 @@
             }
         }
 
-        function aprobarPago(id){
-            fetch("apiCooperativa.php",{
-                    method: "POST",
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        accion: "aprobarComprobante",
-                        idCuota: id
-                    })
-                })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === "ok") {
-                    alert("Aprobado Correctamente.");
-                    mostrarPagos();
-                } else {
-                    alert("Error al aprobar.");
-                }
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                alert("Ocurrió un error al aprobar.");
-            });
-        }
-
-        function denegarPago(id){
-            fetch("apiCooperativa.php",{
-                    method: "POST",
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        accion: "denegarComprobante",
-                        idCuota: id
-                    })
-                })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === "ok") {
-                    alert("Denegado Correctamente.");
-                    mostrarPagos();
-                } else {
-                    alert("Error al denegar.");
-                }
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                alert("Ocurrió un error al denegar.");
-            });
-        }
-
+        
         function verificarSesion(){
             const url = `apiUsuarios.php?accion=verificarSesion`;
             fetch(url)

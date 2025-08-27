@@ -57,6 +57,11 @@ switch ($method){
                 echo json_encode(["redirect" => "login.html"]);
             }
             exit;
+        //Obtener los pagos aprobados por el usuario que esta iniciado en la sesion    
+        }elseif($_GET["accion"] == "getPagosAprobados"){
+            $data = $con->getPagoAprobado($_SESSION["id"]);
+            echo json_encode($data);
+            exit;
         }else{
             echo json_encode(["message" => "Error en la accion" . $_GET["accion"]]);
             exit;
@@ -103,7 +108,7 @@ switch ($method){
                 $fechaPago = clone $fechaPresente;
                 $fechaPago->modify("+$x month");
                 $fecha = $fechaPago->format("Y-m-d");
-                $con->agregarPago($id, $coste, $fecha);
+                $con->agregarPago($id, $coste, $fecha, $tipo);
             }
 
         }else{

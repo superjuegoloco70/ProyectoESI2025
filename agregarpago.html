@@ -24,6 +24,11 @@
         <option value="6">6</option>
     </select>
     <br>
+    <p>Tipo de pago</p>
+    <select id="tipo">
+        <option value="mensual">Mensual</option>
+        <option value="compensativo">Compensativo</option>
+    </select>
     <input type="hidden" value="agregarPago" id="action">
 
     <button onclick="agregarpago()">Agregar Pago</button>
@@ -34,6 +39,7 @@
             const coste = document.getElementById("coste");
             const accion = document.getElementById("action");
             const numeroPagos = document.getElementById("numeroPagos");
+            const tipoPago = document.getElementById("tipo");
             fetch("apiUsuarios.php",{
              
                 method: "POST",
@@ -42,7 +48,8 @@
                 accion: accion.value,
                 CI: ci.value,
                 coste: coste.value,
-                numeroPagos: numeroPagos.value
+                numeroPagos: numeroPagos.value,
+                tipo: tipoPago.value
                 })
 
             })
