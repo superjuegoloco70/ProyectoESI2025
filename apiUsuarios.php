@@ -38,6 +38,10 @@ switch ($method){
                     $_SESSION["id"] = $_GET["ci"]; 
                     echo json_encode(["redirect" => "usuarios.html"]);
                     exit;
+                }elseif($result == 2){
+                    $_SESSION["id"] = $_GET["ci"]; 
+                    echo json_encode(["redirect" => "admins.html"]);
+                    exit;
                 }else{
                     echo json_encode(["message" => "Error"]);
                     exit;
