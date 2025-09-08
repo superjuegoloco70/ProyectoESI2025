@@ -156,6 +156,32 @@
             ];
         }
 
+        public function getPagosPorAprobar($ci){
+            $query = "SELECT * FROM cuotas WHERE PagoAprobado = 0 AND ConfirmantePago IS NOT NULL AND CI_Prestarario = '$ci'";
+            $stmt = $this->conn->prepare($query);
+            $json = [];
+            if($stmt->execute()){
+                $result = $stmt->get_result();
+                while ($row = $result->fetch_assoc()) {
+                    if (!is_null($row['ConfirmantePago'])) {
+                        $row['ConfirmantePago'] = base64_encode($row['ConfirmantePago']);
+                    }
+                    $json[] = $row;
+                }
+            }
+            if(count($json) == 0){
+                return [
+                    "status" => "success",
+                    "message" => "No hay pagos pendientes."
+                ];
+            }
+
+            return [
+                "status" => "success",
+                "message" => $json
+            ];
+        }
+
         public function aprobarComprobantePago($id){
             $query = "UPDATE cuotas SET PagoAprobado = ? WHERE ID_Cuota = ?";
             $stmt = $this->conn->prepare($query);

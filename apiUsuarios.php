@@ -66,6 +66,10 @@ switch ($method){
             $data = $con->getPagoAprobado($_SESSION["id"]);
             echo json_encode($data);
             exit;
+        }elseif($_GET["accion"] == "getPagosPorAprobar"){
+            $data = $con->getPagosPorAprobar($_SESSION["id"]);
+            echo json_encode($data);
+            exit;
         }else{
             echo json_encode(["message" => "Error en la accion" . $_GET["accion"]]);
             exit;
@@ -114,6 +118,9 @@ switch ($method){
                 $fecha = $fechaPago->format("Y-m-d");
                 $con->agregarPago($id, $coste, $fecha, $tipo);
             }
+
+            echo json_encode(["status" => "ok"]);
+            exit;
 
         }else{
             echo json_encode(["message" => "Error en la accion"]);
