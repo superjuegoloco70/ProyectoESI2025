@@ -22,9 +22,7 @@ body {
     text-align: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    margin-bottom: 100%;
     animation: fadeIn 2s ease-in-out;
-
 
 }
 
@@ -48,8 +46,8 @@ header {
     min-height: 40px;
     background-color: var(--topdown-bg);
 
-
 }
+
 article {
 
     margin: 1%;
@@ -96,6 +94,13 @@ nav {
 
 }
 
+.nav {
+
+    display: grid;
+    grid-template-columns: 80% 20%;
+
+}
+
 .moreleft {
 
     grid-template-columns: 45% 55% ;
@@ -119,14 +124,13 @@ nav {
 }
 
 nav img {
-
-    width: 10%;
+    max-width: 150px;
+    width: auto;
 
 }
 
 #top-logo {
 
-    margin-right: 80%;
     float: left;
 
 }
@@ -138,19 +142,65 @@ nav #button-top {
 }
 
 
-ul {
+.threesides {
 
-    display: inline;
-    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 3%;
+    
+}
+
+.threechild {
+
+    min-height: 800px;
+    background-color: white;
+    color: black;
+    padding: 5%;
+}
+
+.threechild h1 {
+
+    font-size: 60px;
+    margin-block: 20px;
 
 }
 
-li {
+.threechild ul {
 
-    display: inline;
+    margin-top: 20px;
 
 }
 
+.threechild li {
+
+    font-size: 25px;
+    margin-bottom: 10px;
+    font-weight: 100;
+    list-style-position: inside;
+
+}
+
+footer {
+
+    min-height: 230px;
+    background-color: var(--topdown-bg);
+    text-align: center;
+
+}
+
+.footer {
+
+    text-align: center;
+
+}
+
+.footer h6 {
+    margin-inline: 10px;
+    font-weight: 300;
+    display: inline;
+
+}
 
 
 @keyframes fadeIn {
@@ -160,4 +210,30 @@ li {
   100% {
     opacity: 1;
   }
+}
+
+@media screen and (max-width: 764px) {
+
+    .moreleft { grid-template-columns: 1fr;}
+    .first p {font-size: 10px;}
+    .firstml {display: none;}
+    .lastml {padding: 7%;}
+
+}
+
+@media screen and (max-width: 714px) {
+    .nav {
+
+    display: grid;
+    grid-template-columns: 55% 45%;
+
+}
+
+}
+
+@media screen and (max-width: 864px) {
+
+  .threesides { grid-template-columns: 1fr; }
+
+
 }
