@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Ver deudas pendientes y añadir comprobantes</h1>
+    <br>
+    <table border="1" id="tablaPagos">
+        <thead>
+            <tr>
+                <th>
+                    Coste
+                </th>
+                <th>
+                    Vencimiento
+                </th>
+                <th>
+                    Tipo de Pago
+                </th>
+                <th>
+                    Subir Comprobante
+                </th>
+                <th>
+                    Actualizar pago
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+
+    </table>
+    <br>
+    <a href="usuarios.html">Volver</a>
+
+    <script>
+        function mostrarPagos(){
+
+            const accion = "getPagosVacios";
+            const url = `apiCooperativa.php?accion=${encodeURIComponent(accion)}`;
+
+            fetch(url)
+            .then(response => {
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                return response.json();
+            }else{
+                throw new Error("La respuesta no es JSON válida");
+            }
+            })
+            .then(data => {
+            if (Array.isArray(data.message)) {
+                llenarTabla(data.message);
+            }else{
+                throw new Error("El formato del JSON no es válido");
+            }
+            })
+            .catch(error => {
+            console.error('Error:', error);
+            alert("Ocurrió un error al mostrar pagos.");
+            });
+        }
+
+        function llenarTabla(pagos){
+            const tabla = document.getElementById('tablaPagos');
+            const tbody = tabla.querySelector('tbody');
+
+            tbody.innerHTML = '';
+
+            pagos.forEach(pago => {
+
+            const fila = document.createElement('tr');
+            const fileInputId = `file_${pago.ID_Cuota}`;
+
+
+            fila.innerHTML = `
+            <td>
+                ${pago.Coste}
+            </td>
+            <td>
+                ${pago.Vencimiento}
+            </td>
+            <td>
+                ${pago.TipodeCuota}
+            </td>
+            <td>
+                <input type="file" accept="image/*" id="${fileInputId}">
+            </td>
+            <td>
+                <button onclick="anadirComprobante('${pago.ID_Cuota}', '${fileInputId}')">Actualizar</button>
+            </td>
+            `;
+            
+            tbody.appendChild(fila);
+            });
+
+            tabla.style.display = 'table';
+
+        }
+
+        function anadirComprobante(idCuota, inputID){
+            const inputFile = document.getElementById(inputID);
+            const file = inputFile.files[0];
+            if (!file) {
+            alert("Por favor, selecciona una imagen para subir.");
+            return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const imagenBase64 = e.target.result;
+
+                fetch("apiCooperativa.php", {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        accion: "subirComprobante",
+                        idCuota: idCuota,
+                        comprobante: imagenBase64
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "ok") {
+                        alert("Comprobante subido correctamente.");
+                        mostrarPagos();
+                    } else {
+                        alert("Error al subir el comprobante.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("Ocurrió un error al subir el comprobante.");
+                });
+            };
+
+            reader.readAsDataURL(file);
+
+        }
+
+        function verificarSesion(){
+            const url = `apiUsuarios.php?accion=verificarSesion`;
+            fetch(url)
+            .then(response => {
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                return response.json();
+            } else {
+                throw new Error("La respuesta no es JSON válida");
+            }
+            })
+            .then(data => {
+            if (data.redirect) {
+                window.location.href = data.redirect;
+            } else {
+                console.log('Respuesta:', data);
+                alert(data.message || "Error en el inicio de sesión.");
+            }
+            })
+        }
+
+        window.onload = function () {
+            mostrarPagos();
+            verificarSesion();
+        };
+    </script>
+</body>
+</html>
