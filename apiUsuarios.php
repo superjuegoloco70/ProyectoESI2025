@@ -66,9 +66,15 @@ switch ($method){
             $data = $con->getPagoAprobado($_SESSION["id"]);
             echo json_encode($data);
             exit;
+        //Obtener los pagos no aprobados con comprobantes del usuario que esta iniciado en la sesion
         }elseif($_GET["accion"] == "getPagosPorAprobar"){
             $data = $con->getPagosPorAprobar($_SESSION["id"]);
             echo json_encode($data);
+            exit;
+        //Obtener las horas trabajadas por el usuario iniciado en la sesion
+        }elseif($_GET["accion"] == "getHoras"){
+            $data = $con->getHoras($_SESSION["id"]);
+            echo json_encode(["message" => $data]);
             exit;
         }else{
             echo json_encode(["message" => "Error en la accion" . $_GET["accion"]]);
