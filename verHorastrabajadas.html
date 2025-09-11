@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <input type="hidden" id="action" value="getHoras">
+
+    <table border="1" id="tablaHoras">
+        <thead>
+            <tr>
+                <th>
+                    Fecha
+                </th>
+                <th>
+                    Horas
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+
+    </table>
+    <br>
+    <a href="usuarios.html">Volver</a>
+
+    <script>
+        function mostrarHoras(){
+
+            const accion = document.getElementById('action').value;
+            const url = `apiUsuarios.php?accion=${encodeURIComponent(accion)}`;
+
+            fetch(url)
+            .then(response => {
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                return response.json();
+            }else{
+                throw new Error("La respuesta no es JSON válida");
+            }
+            })
+            .then(data => {
+            if (Array.isArray(data.message)) {
+                llenarTabla(data.message);
+            }else{
+                throw new Error("El formato del JSON no es válido");
+            }
+            })
+            .catch(error => {
+            console.error('Error:', error);
+            alert("Ocurrió un error al mostrar horas.");
+            });
+        }
+
+        function llenarTabla(horas){
+            const tabla = document.getElementById('tablaHoras');
+            const tbody = tabla.querySelector('tbody');
+
+            tbody.innerHTML = '';
+
+            horas.forEach(hora => {
+
+            const fila = document.createElement('tr');
+
+            fila.innerHTML = `
+            <td>
+                ${hora.FechaTrabajo}
+            </td>
+            <td>
+                ${hora.N_Horas}
+            </td>
+            `;
+            
+            tbody.appendChild(fila);
+            });
+
+            tabla.style.display = 'table';
+
+        }
+
+        function aprobarUsuario(ci){
+            fetch('apiUsuarios.php',
+                {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        accion: 'Aprobar',
+                        CI: ci
+                    })
+                }
+            )
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                alert(`Estado del usuario con CI ${ci} actualizado`);
+                mostrarUsuarios();
+                } else {
+                alert(`No se pudo actualizar el estado para CI ${ci}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error al cambiar estado:', error);
+                alert('Ocurrió un error al cambiar el estado.');
+            });
+        }
+
+        function verificarSesion(){
+            const url = `apiUsuarios.php?accion=verificarSesion`;
+            fetch(url)
+            .then(response => {
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                return response.json();
+            } else {
+                throw new Error("La respuesta no es JSON válida");
+            }
+            })
+            .then(data => {
+            if (data.redirect) {
+                window.location.href = data.redirect;
+            } else {
+                console.log('Respuesta:', data);
+                alert(data.message || "Error en el inicio de sesión.");
+            }
+            })
+        }
+
+        window.onload = function () {
+            mostrarHoras();
+            verificarSesion();
+        };
+
+    </script>
+
+</body>
+</html>

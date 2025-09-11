@@ -211,6 +211,16 @@
             $stmt->close();
             return $res;
         }
+
+        public function getHoras($ci){
+            $query = "SELECT * FROM horastrabajadas WHERE CI_Trabajador = $ci";
+            $result = $this->conn->query($query);
+            while($row = mysqli_fetch_assoc($result)){
+                $json[] = $row;
+            }
+            
+            return $json;
+        }
     }
     
 
