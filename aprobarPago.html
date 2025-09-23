@@ -59,20 +59,19 @@
             }
             })
             .then(data => {
-                if (data.status === "success") {
-                    if (Array.isArray(data.message) && data.message.length > 0) {
+                if(data.status === "success") {
+                    if(Array.isArray(data.message) && data.message.length > 0){
                         llenarTabla(data.message);
                         document.getElementById('mensajeSinDatos').style.display = 'none';
                         document.getElementById('tablaPagos').style.display = 'table';
-                    } else {
-                        // No hay datos, mostrar mensaje
+                    }else{
                         limpiarTabla();
                         document.getElementById('tablaPagos').style.display = 'none';
                         const mensajeElem = document.getElementById('mensajeSinDatos');
                         mensajeElem.textContent = data.message || "No hay pagos pendientes.";
                         mensajeElem.style.display = 'block';
                     }
-                } else {
+                }else{
                     throw new Error("Error en la respuesta del servidor");
                 }
             })
@@ -130,9 +129,9 @@
 
         }
 
-        function limpiarTabla() {
+        function limpiarTabla(){
             const tbody = document.querySelector('#tablaPagos tbody');
-            if (tbody) {
+            if(tbody){
                 tbody.innerHTML = '';
             }
         }
@@ -186,7 +185,7 @@
         }
 
         function verificarSesion(){
-            const url = `apiUsuarios.php?accion=verificarSesion`;
+            const url = `apiUsuarios.php?accion=verificarAdmin`;
             fetch(url)
             .then(response => {
             const contentType = response.headers.get("content-type");

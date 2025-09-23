@@ -14,7 +14,7 @@
 
     <script>
         function verificarSesion(){
-            const url = `apiUsuarios.php?accion=verificarSesion`;
+            const url = `apiUsuarios.php?accion=verificarAdmin`;
             fetch(url)
             .then(response => {
             const contentType = response.headers.get("content-type");

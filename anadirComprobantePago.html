@@ -33,6 +33,7 @@
         </tbody>
 
     </table>
+    <div id="mensajeSinDatos" style="display:none;"></div>
     <br>
     <a href="usuarios.html">Volver</a>
 
@@ -53,7 +54,15 @@
             })
             .then(data => {
             if (Array.isArray(data.message)) {
-                llenarTabla(data.message);
+                if(data.message.length > 0){
+                        llenarTabla(data.message);
+                }else{
+                    limpiarTabla();
+                    document.getElementById('tablaPagos').style.display = 'none';
+                    const mensajeElem = document.getElementById('mensajeSinDatos');
+                    mensajeElem.textContent = "No hay deudas pendientes.";
+                    mensajeElem.style.display = 'block';
+                }
             }else{
                 throw new Error("El formato del JSON no es válido");
             }
@@ -101,6 +110,13 @@
 
         }
 
+        function limpiarTabla(){
+            const tbody = document.querySelector('#tablaPagos tbody');
+            if(tbody){
+                tbody.innerHTML = '';
+            }
+        }
+
         function anadirComprobante(idCuota, inputID){
             const inputFile = document.getElementById(inputID);
             const file = inputFile.files[0];
@@ -143,7 +159,7 @@
         }
 
         function verificarSesion(){
-            const url = `apiUsuarios.php?accion=verificarSesion`;
+            const url = `apiUsuarios.php?accion=verificarUsuario`;
             fetch(url)
             .then(response => {
             const contentType = response.headers.get("content-type");

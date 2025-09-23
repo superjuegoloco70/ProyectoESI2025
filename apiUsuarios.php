@@ -55,12 +55,31 @@ switch ($method){
             $data = $con->getWaiting();
             echo json_encode(["message" => $data]);  
             exit;
-        //Verificar que se inició la sesión
-        }elseif($_GET["accion"] == "verificarSesion"){
-            if($_SESSION["id"] == 0){
+        
+        //Verificar que la sesion es de un usuario
+        }elseif($_GET["accion"] == "verificarUsuario"){
+            $result = $con->checkApproved($_SESSION["id"]);
+            if($result != "1"){
                 echo json_encode(["redirect" => "login.html"]);
             }
             exit;
+        }
+        //Verificar que la sesion es de un admin
+        elseif($_GET["accion"] == "verificarAdmin"){
+            $result = $con->checkApproved($_SESSION["id"]);
+            if($result != "2"){
+                echo json_encode(["redirect" => "login.html"]);
+            }
+            exit;   
+        }
+        //Verificar que la sesion es de un usuario no aprobado
+        elseif($_GET["accion"] == "verificarNoAprobado"){
+            $result = $con->checkApproved($_SESSION["id"]);
+            if($result != "0"){
+                echo json_encode(["redirect" => "login.html"]);
+            }
+            exit;   
+        
         //Obtener los pagos aprobados por el usuario que esta iniciado en la sesion    
         }elseif($_GET["accion"] == "getPagosAprobados"){
             $data = $con->getPagoAprobado($_SESSION["id"]);

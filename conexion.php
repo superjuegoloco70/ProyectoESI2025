@@ -51,6 +51,7 @@
         public function getWaiting(){
             $query = "SELECT * FROM usuarios WHERE Estado = 0";
             $result = $this->conn->query($query);
+            $json = [];
             while($row = mysqli_fetch_assoc($result)){
                 $json[] = $row;
             }
@@ -79,6 +80,7 @@
         public function getPagosVacios($ci){
             $query = "SELECT * FROM cuotas WHERE CI_Prestarario = '$ci' AND ConfirmantePago IS NULL";
             $result = $this->conn->query($query);
+            $json = [];
             while($row = mysqli_fetch_assoc($result)){
                 $json[] = $row;
             }
@@ -215,12 +217,14 @@
         public function getHoras($ci){
             $query = "SELECT * FROM horastrabajadas WHERE CI_Trabajador = $ci";
             $result = $this->conn->query($query);
+            $json = [];
             while($row = mysqli_fetch_assoc($result)){
                 $json[] = $row;
             }
             
             return $json;
         }
+
     }
     
 
