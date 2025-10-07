@@ -6,6 +6,11 @@
     <title>Document</title>
 </head>
 <body>
+
+    <div id="infousuario">
+
+    </div>
+
     <a href="aprobarusuarios.html">Aprobar usuarios</a>
     <br>
     <a href="agregarpago.html">Agregar Pago</a>
@@ -13,6 +18,61 @@
     <a href="aprobarPago.html">Aprobar Pago</a>
 
     <script>
+
+        function mostrarUsuario(){
+
+            const url = `apiUsuarios.php?accion=getUsuario`;
+
+            fetch(url)
+            .then(response => {
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                return response.json();
+            }else{
+                throw new Error("La respuesta no es JSON válida");
+            }
+            })
+            .then(data => {
+                if (Array.isArray(data.message)) {
+                    if(data.message.length > 0){
+                        llenarDatos(data.message);
+                    }
+                }else{
+                    throw new Error("El formato del JSON no es válido");
+                }
+            })
+            .catch(error => {
+            console.error('Error:', error);
+            alert("Ocurrió un error al mostrar data.");
+            });
+        }
+
+        function llenarDatos(data){
+            const div = document.getElementById('infousuario');
+
+            data.forEach(data => {
+
+            const nombre = document.createElement('p');
+            const ci = document.createElement('p');
+
+            nombre.innerHTML = `
+                <p>
+                Bienvenido ${data.Nombre} 
+                </p>
+            `;
+
+            ci.innerHTML = `
+                <p>
+                CI: ${data.CI}
+                </p>
+            `;
+            
+            div.appendChild(nombre);
+            div.appendChild(ci);
+            });
+
+        }
+
         function verificarSesion(){
             const url = `apiUsuarios.php?accion=verificarAdmin`;
             fetch(url)
@@ -36,6 +96,7 @@
 
         window.onload = function () {
             verificarSesion();
+            mostrarUsuario();
         };
     </script>
 </body>

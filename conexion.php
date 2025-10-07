@@ -225,6 +225,19 @@
             return $json;
         }
 
+        public function getUsuario($ci){
+
+            $query = "SELECT * FROM usuarios WHERE CI = $ci";
+            $result = $this->conn->query($query);
+            $json = [];
+            while($row = mysqli_fetch_assoc($result)){
+                $json[] = $row;
+            }
+            
+            return $json;
+
+        }
+
     }
     
 

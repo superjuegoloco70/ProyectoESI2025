@@ -95,7 +95,13 @@ switch ($method){
             $data = $con->getHoras($_SESSION["id"]);
             echo json_encode(["message" => $data]);
             exit;
-        }else{
+        //Obtener la informacion del usuario
+        }elseif($_GET["accion"] == "getUsuario"){
+            $data = $con->getUsuario($_SESSION["id"]);
+            echo json_encode(["message" => $data]);
+            exit;
+        }
+        else{
             echo json_encode(["message" => "Error en la accion" . $_GET["accion"]]);
             exit;
         }
