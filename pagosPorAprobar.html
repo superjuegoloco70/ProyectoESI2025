@@ -128,7 +128,7 @@
 
         
         function verificarSesion(){
-            const url = `apiUsuarios.php?accion=verificarUsuario`;
+            const url = `apiUsuarios.php?accion=verificarNoAprobado`;
             fetch(url)
             .then(response => {
             const contentType = response.headers.get("content-type");

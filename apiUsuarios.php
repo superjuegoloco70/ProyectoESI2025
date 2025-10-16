@@ -75,7 +75,7 @@ switch ($method){
         //Verificar que la sesion es de un usuario no aprobado
         elseif($_GET["accion"] == "verificarNoAprobado"){
             $result = $con->checkApproved($_SESSION["id"]);
-            if($result != "0"){
+            if($result != "0" || $result != "1"){
                 echo json_encode(["redirect" => "login.html"]);
             }
             exit;   
@@ -116,7 +116,7 @@ switch ($method){
                 $result = $con->newUser($name, $id, $passwd);
                 if ($result == true){
                     $_SESSION["id"] = $id;
-                    echo json_encode(["redirect" => "esperandoaprobacion.html"]);
+                    echo json_encode(["redirect" => "usuarios.html"]);
                     exit;
                 }else{
                     echo json_encode(["message" => "El usuario ya existe"]);
