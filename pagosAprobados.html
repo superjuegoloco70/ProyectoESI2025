@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>NetCoop</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>Pagos Aprobados</h1>
@@ -127,7 +128,7 @@
 
         
         function verificarSesion(){
-            const url = `apiUsuarios.php?accion=verificarUsuario`;
+            const url = `apiUsuarios.php?accion=verificarNoAprobadoPagar`;
             fetch(url)
             .then(response => {
             const contentType = response.headers.get("content-type");

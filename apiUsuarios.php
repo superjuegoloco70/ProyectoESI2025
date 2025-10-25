@@ -30,11 +30,7 @@ switch ($method){
             $data = $con->checkCiPass($_GET["ci"]);
             if($_GET["passwd"] == $data["Contrasena"]){  
                 $result = $con->checkApproved($_GET["ci"]);
-                if($result == 0){
-                    $_SESSION["id"] = $_GET["ci"]; 
-                    echo json_encode(["redirect" => "esperandoaprobacion.html"]);
-                    exit;
-                }elseif($result == 1){
+                if($result == 1 || $result == 0){
                     $_SESSION["id"] = $_GET["ci"]; 
                     echo json_encode(["redirect" => "usuarios.html"]);
                     exit;
@@ -75,8 +71,15 @@ switch ($method){
         //Verificar que la sesion es de un usuario no aprobado
         elseif($_GET["accion"] == "verificarNoAprobado"){
             $result = $con->checkApproved($_SESSION["id"]);
-            if($result != "0"){
+            if($result == 2){
                 echo json_encode(["redirect" => "login.html"]);
+            }
+            exit;   
+        
+        }elseif($_GET["accion"] == "verificarNoAprobadoPagar"){
+            $result = $con->checkApproved($_SESSION["id"]);
+            if($result == 0){
+                echo json_encode(["redirect" => "esperandoaprobacion.html"]);
             }
             exit;   
         
@@ -116,7 +119,7 @@ switch ($method){
                 $result = $con->newUser($name, $id, $passwd);
                 if ($result == true){
                     $_SESSION["id"] = $id;
-                    echo json_encode(["redirect" => "esperandoaprobacion.html"]);
+                    echo json_encode(["redirect" => "usuarios.html"]);
                     exit;
                 }else{
                     echo json_encode(["message" => "El usuario ya existe"]);
@@ -140,6 +143,7 @@ switch ($method){
             $id = $input["CI"];
             $costeTotal = $input["coste"];
             $numeroPagos = $input["numeroPagos"];
+            $tipo = $input["tipo"];
             $fechaPresente = new DateTime();
             $coste = $costeTotal / $numeroPagos;
 
