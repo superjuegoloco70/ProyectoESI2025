@@ -40,8 +40,8 @@ services:
       sh -c "apk add --no-cache mysql-client tar gzip openssh-client sshpass findutils;
              sshpass -p '57210270' ssh -o StrictHostKeyChecking=no -N -f dayron.ranz@192.168.5.50 || true;
              while true; do
-               mysqldump -h db -udayron.ranz -p57210270 3mhdr > /backups/db-backup-\${TS}.sql;
-               tar -czf /backups/web-backup-\${TS}.tar.gz -C /web .;
+               mysqldump -h db -udayron.ranz -p57210270 3mhdr > /backups/db-backup-\$(date +%F_%H-%M).sql;
+               tar -czf /backups/web-backup-\$(date +%F_%H-%M).tar.gz -C /web .;
                find /backups -type f -mtime +7 -name '*.sql.gz' -exec rm -f {} \;
                find /backups -type f -mtime +7 -name '*.tar.gz' -exec rm -f {} \;
                sleep 86400;
