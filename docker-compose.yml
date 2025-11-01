@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+
+  web:
+    build: .
+    depends_on:
+      - db
+    links:
+      - db
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www/html   # monta el directorio actual como página web
+
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: 3mhdr
+      MYSQL_USER: dayron.ranz
+      MYSQL_PASSWORD: 57210270
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./BD:/docker-entrypoint-initdb.d
+
+  backup:
+    image: alpine:latest
+    container_name: backup_all
+    depends_on:
+      - db
+    volumes:
+      - ./:/web
+      - ./backups:/backups
+    entrypoint: >
+      sh -c "apk add --no-cache mysql-client tar gzip openssh-client sshpass findutils;
+             sshpass -p '57210270' ssh -o StrictHostKeyChecking=no -N -f dayron.ranz@192.168.5.50 || true;
+             while true; do
+               mysqldump -h db -udayron.ranz -p57210270 3mhdr > /backups/db-backup-\${TS}.sql;
+               tar -czf /backups/web-backup-\${TS}.tar.gz -C /web .;
+               find /backups -type f -mtime +7 -name '*.sql.gz' -exec rm -f {} \;
+               find /backups -type f -mtime +7 -name '*.tar.gz' -exec rm -f {} \;
+               sleep 86400;
+             done"
+
+volumes:
+  db_data:
