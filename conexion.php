@@ -8,7 +8,7 @@
 
         public $conn;
         public function __construct() {
-            $this->conn = new mysqli("localhost:3306","root","","3mhdr");
+            $this->conn = new mysqli("db","dayron.ranz","57210270","3mhdr");
             if ($this->conn->connect_error) {
                 die("Connection failed: " . $this->conn->connect_error);
             }
